@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Olympische Spelen 2024</title>
+</head>
+<body>
+    <h1>Sporten Overzicht</h1>
+    <ul>
+        <li th:each="sport : ${sport}">
+            <a th:href="@{'/wedstrijden/' + ${sport.id}}" th:text="${sport.naam}">Sportnaam</a>
+        </li>
+    </ul>
+</body>
+</html>

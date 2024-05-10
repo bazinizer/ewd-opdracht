@@ -1,0 +1,12 @@
+package service;
+
+import java.util.List;
+
+import domain.Wedstrijd;
+
+public interface WedstrijdService {
+    void save(Wedstrijd wedstrijd);
+    void saveAll(Iterable<Wedstrijd> wedstrijden);
+    List<Wedstrijd> findAll();
+    Wedstrijd findById(Long id);
+}

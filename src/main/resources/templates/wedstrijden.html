@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Wedstrijden Overzicht</title>
+</head>
+<body>
+    <h1>Wedstrijden Overzicht</h1>
+    <ul>
+        <li th:each="wedstrijd : ${wedstrijden}">
+            <a th:href="@{'/wedstrijden/' + ${wedstrijd.id}}" th:text="${wedstrijd.sport.naam + ' - ' + wedstrijd.datumTijd}">Wedstrijd</a>
+        </li>
+    </ul>
+</body>
+</html>
