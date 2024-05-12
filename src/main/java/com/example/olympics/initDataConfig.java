@@ -16,11 +16,13 @@ import domain.MyUser;
 import domain.Role;
 import domain.Sport;
 import domain.Stadium;
+import domain.Ticket;
 import domain.Wedstrijd;
 import repository.MyUserRepository;
 import repository.SportRepository;
 import service.SportService;
 import service.StadiumService;
+import service.TicketService;
 import service.WedstrijdService;
 
 @Configuration
@@ -39,6 +41,9 @@ import service.WedstrijdService;
 	    
 	    @Autowired
 	    private StadiumService stadiumService;
+	    @Autowired
+	    private TicketService ticketService;
+	    
 	    
 	    
 	    
@@ -48,19 +53,25 @@ import service.WedstrijdService;
 	    	
 	        var user =
 	        		MyUser.builder()
-	                .username("user")
+	                .username("Baz")
 	                .role(Role.USER)
-	                .password(encoder.encode("user123"))
+	                .password(encoder.encode("123"))
 	                .build();
+	        var userWithNoTickets =
+	                MyUser.builder()
+	                    .username("Mark")
+	                    .role(Role.USER)
+	                    .password(encoder.encode("123"))
+	                    .build();
 	    	
 	        var admin =
 	        		MyUser.builder()
 	                .username("admin")
 	                .role(Role.ADMIN)
-	                .password(encoder.encode("admin123"))
+	                .password(encoder.encode("123"))
 	                .build();
 	        
-		List<MyUser> userList =  Arrays.asList(admin, user);
+		List<MyUser> userList =  Arrays.asList(admin, user,userWithNoTickets);
 		myUserRepository.saveAll(userList);
 		
 		
@@ -94,5 +105,10 @@ import service.WedstrijdService;
 	        Wedstrijd wedstrijdTennis = new Wedstrijd(tennis, stadium2, LocalDateTime.now().plusDays(2), 50, 30, disciplinesTennis);
 
 	        wedstrijdService.saveAll(Arrays.asList(wedstrijdVoetbal, wedstrijdTennis));
+	        
+	        
+	        Ticket ticket1 = new Ticket(wedstrijdVoetbal, user, 2, 100.0);
+	        Ticket ticket2 = new Ticket(wedstrijdTennis, user, 1, 30.0);
+	        ticketService.saveAll(Arrays.asList(ticket1, ticket2));
 	    }
 	}

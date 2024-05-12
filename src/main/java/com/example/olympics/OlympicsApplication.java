@@ -1,25 +1,20 @@
 package com.example.olympics;
 
-import java.util.List;
-
-
-
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-import domain.Sport;
-
 import service.MyUserService;
 import service.SportService;
-import service.StadiumService;
 import service.SportServiceImpl;
+import service.StadiumService;
 import service.StadiumServiceImpl;
+import service.TicketService;
+import service.TicketServiceImpl;
 import service.WedstrijdService;
 import service.WedstrijdServiceImpl;
 
@@ -54,8 +49,12 @@ public class OlympicsApplication implements WebMvcConfigurer {
     	return new WedstrijdServiceImpl();
     }
     @Bean
-    public StadiumService StadiumService() {
+    public StadiumService stadiumService() {
     	return new StadiumServiceImpl();
+    }
+    @Bean
+    public TicketService ticketService() {
+    	return new TicketServiceImpl();
     }
     
 }
