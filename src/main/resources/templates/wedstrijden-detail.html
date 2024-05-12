@@ -4,22 +4,38 @@
     <meta charset="UTF-8">
     <title>Wedstrijd Detail - Olympische Spelen 2024</title>
     <link rel="stylesheet" th:href="@{/css/style.css}" />
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@^2.0/dist/tailwind.min.css" rel="stylesheet">
 </head>
-<body>
-    <header>Wedstrijd Detail</header>
-    <div>
-        <h3>Sport</h3>
-        <p th:text="${wedstrijd.sport.naam}">Sport</p>
-        <h3>Datum en Tijd</h3>
-        <p th:text="${wedstrijd.datumTijd}">Datum en Tijd</p>
-        <h3>Stadium</h3>
-        <p th:text="${wedstrijd.stadium.naam}">Stadium</p>
-        <h3>Prijs per Ticket</h3>
-        <p th:text="${wedstrijd.prijsPerTicket}">Prijs per Ticket</p>
-        <h3>Disciplines</h3>
-        <ul>
-            <li th:each="discipline : ${wedstrijd.disciplines}" th:text="${discipline}">Discipline</li>
-        </ul>
+<body class="bg-gray-100">
+    <header class="text-xl font-bold text-center py-4 bg-blue-500 text-white">Wedstrijd Detail</header>
+    
+    <div class="container mx-auto px-4 py-2">
+        <h1 class="text-2xl font-bold" th:text="${wedstrijd.sport.naam} + ' - Overzicht'">Sportnaam - Overzicht</h1>
+        <h2 class="text-lg mt-4 mb-2" th:text="'Wedstrijden voor ' + ${wedstrijd.sport.naam}">Wedstrijden voor Sport</h2>
+
+        <th:block th:each="discipline : ${wedstrijd.disciplines}">
+            <h3 class="text-md mt-4 mb-2 font-semibold" th:text="${discipline}">Discipline</h3>
+            <div class="flex flex-wrap justify-start items-center">
+                <ul class="w-full">
+                    <li class="flex justify-between items-center bg-white rounded shadow px-4 py-2 my-2">
+                        <span class="font-medium" th:text="${wedstrijd.sport.naam}">Sportnaam</span>
+                        <span th:text="${wedstrijd.stadium.naam}">Stadium</span>
+                        <span th:text="'Open plaatsen: ' + ${wedstrijd.vrijePlaatsen}">Open plaatsen</span>
+                        <span th:if="${isAdmin or wedstrijd.vrijePlaatsen > 0}" th:text="${wedstrijd.prijsPerTicket} + ' EUR'">Prijs per Ticket</span>
+                        <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onclick="location.href='/koopTicket.html'">Koop ticket</button>
+                    </li>
+                </ul>
+            </div>
+        </th:block>
+                <div class="mt-8">
+            <h2 class="text-lg font-bold">Je Gekochte Tickets</h2>
+            <ul>
+                
+                    <p th:text="'Aantal tickets gekocht: ' + ${tickets}"></p>
+                
+            </ul>
+        </div>
+
     </div>
 </body>
 </html>

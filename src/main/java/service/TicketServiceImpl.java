@@ -41,6 +41,15 @@ public class TicketServiceImpl implements TicketService {
     public List<Ticket> findTicketsByUser(String username) {
         return ticketRepository.findByUser_Username(username);
     }
+    @Override
+    public int countByUserId(Long userId) {
+        return ticketRepository.countByUserId(userId);
+    }
+    @Override
+    public int countByUserUsernameAndWedstrijdId(String username, Long wedstrijdId) {
+        return ticketRepository.countByUserUsernameAndWedstrijdId(username, wedstrijdId);
+    }
+
 
     @Override
     public boolean hasTicketsForSport(Long sportId, String username) {

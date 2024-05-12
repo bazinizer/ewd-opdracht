@@ -11,5 +11,7 @@ public interface TicketService {
 	List<Ticket> findTicketsByUser(String username);
 	void saveAll(Iterable<Ticket> tickets);
 	boolean hasTickets(String username);
+	int countByUserId(Long userId);
+	int countByUserUsernameAndWedstrijdId(String username, Long wedstrijdId);
     
 }

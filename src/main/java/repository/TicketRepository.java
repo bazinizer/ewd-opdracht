@@ -11,5 +11,7 @@ import domain.Ticket;
 public interface TicketRepository extends CrudRepository<Ticket, Long> {
     List<Ticket> findByUser_UsernameAndWedstrijd_Sport_Id(String username, Long sportId);
     List<Ticket> findByUser_Username(String username);
+	int countByUserUsernameAndWedstrijdId(String username, Long wedstrijdId);
+	int countByUserId(Long userId);
 
 }

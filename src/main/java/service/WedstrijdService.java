@@ -9,4 +9,6 @@ public interface WedstrijdService {
     void saveAll(Iterable<Wedstrijd> wedstrijden);
     List<Wedstrijd> findAll();
     Wedstrijd findById(Long id);
+	List<Wedstrijd> findAllSortedByDate();
+	int countTicketsByUserIdAndWedstrijdId(String username, Long wedstrijdId);
 }
