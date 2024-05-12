@@ -2,14 +2,40 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Olympische Spelen 2024</title>
+    <title>Olympische Spelen 2024 - Sporten</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}" />
 </head>
 <body>
-    <h1>Sporten Overzicht</h1>
+    <header>Sporten Overzicht</header>
+    <h2>Welcome, <span th:text="${username}">Gebruikersnaam</span>!</h2>
     <ul>
         <li th:each="sport : ${sport}">
             <a th:href="@{'/wedstrijden/' + ${sport.id}}" th:text="${sport.naam}">Sportnaam</a>
         </li>
     </ul>
+
+    <!-- Controleer of de gebruiker tickets heeft en geen admin is -->
+    <div th:if="${!#authorization.expression('hasRole(''ADMIN'')') and hasTickets}">
+        <button onclick="toggleTickets()">Mijn Tickets</button>
+        <div id="ticketList" style="display:none;">
+            <ul>
+                <li th:each="ticket : ${tickets}" th:text="${ticket.wedstrijd.sport.naam + ' - ' + ticket.wedstrijd.datumTijd + ' - ' + ticket.aantal + ' tickets'}"></li>
+            </ul>
+        </div>
+    </div>
+    <div th:if="${!#authorization.expression('hasRole(''ADMIN'')') and !hasTickets}">
+        <span>Je hebt nog geen tickets</span>
+    </div>
+
+    <script>
+        function toggleTickets() {
+            var x = document.getElementById("ticketList");
+            if (x.style.display === "none") {
+                x.style.display = "block";
+            } else {
+                x.style.display = "none";
+            }
+        }
+    </script>
 </body>
 </html>

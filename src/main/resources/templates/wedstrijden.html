@@ -2,10 +2,11 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Wedstrijden Overzicht</title>
+    <title>Wedstrijden Overzicht - Olympische Spelen 2024</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}" />
 </head>
 <body>
-    <h1>Wedstrijden Overzicht</h1>
+    <header>Wedstrijden Overzicht</header>
     <ul>
         <li th:each="wedstrijd : ${wedstrijden}">
             <a th:href="@{'/wedstrijden/' + ${wedstrijd.id}}" th:text="${wedstrijd.sport.naam + ' - ' + wedstrijd.datumTijd}">Wedstrijd</a>

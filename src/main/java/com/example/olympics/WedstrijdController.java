@@ -19,7 +19,7 @@ public class WedstrijdController {
     @GetMapping
     public String listWedstrijden(Model model) {
         model.addAttribute("wedstrijden", wedstrijdService.findAll());
-        return "wedstrijden"; // This should be the name of your Thymeleaf template
+        return "wedstrijden"; 
     }
 
     @GetMapping("/{id}")

@@ -40,6 +40,7 @@ public class SecurityConfig{
         http.csrf(csrf -> csrf.csrfTokenRepository(new HttpSessionCsrfTokenRepository()))
                 .authorizeHttpRequests(requests ->
                         requests.requestMatchers("/login**").permitAll()
+                        		.requestMatchers("/css/**").permitAll()
                                 .requestMatchers("/403**").permitAll()
                                 .requestMatchers("/sport/**").hasAnyRole("USER","ADMIN")
                                 .requestMatchers("/wedstrijden/{id}/**").hasRole("ADMIN"))

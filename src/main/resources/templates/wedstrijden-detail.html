@@ -2,15 +2,24 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Wedstrijd Detail</title>
+    <title>Wedstrijd Detail - Olympische Spelen 2024</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}" />
 </head>
 <body>
-    <h1>Wedstrijd Detail</h1>
-    <p th:text="${wedstrijd.sport.naam}">Sport</p>
-    <p th:text="${wedstrijd.datumTijd}">Datum en Tijd</p>
-    <p th:text="${wedstrijd.prijsPerTicket}">Prijs per Ticket</p>
-    <ul>
-        <li th:each="discipline : ${wedstrijd.disciplines}" th:text="${discipline}">Discipline</li>
-    </ul>
+    <header>Wedstrijd Detail</header>
+    <div>
+        <h3>Sport</h3>
+        <p th:text="${wedstrijd.sport.naam}">Sport</p>
+        <h3>Datum en Tijd</h3>
+        <p th:text="${wedstrijd.datumTijd}">Datum en Tijd</p>
+        <h3>Stadium</h3>
+        <p th:text="${wedstrijd.stadium.naam}">Stadium</p>
+        <h3>Prijs per Ticket</h3>
+        <p th:text="${wedstrijd.prijsPerTicket}">Prijs per Ticket</p>
+        <h3>Disciplines</h3>
+        <ul>
+            <li th:each="discipline : ${wedstrijd.disciplines}" th:text="${discipline}">Discipline</li>
+        </ul>
+    </div>
 </body>
 </html>

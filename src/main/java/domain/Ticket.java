@@ -31,21 +31,26 @@ import lombok.Setter;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "ticket")
 public class Ticket implements Serializable {
-    private static final long serialVersionUID = 1L;
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
     private MyUser user;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "wedstrijd_id")
     private Wedstrijd wedstrijd;
 
+    @Column(nullable = false)
     private int aantal;
+
+    @Column(nullable = false)
     private double totalePrijs;
-    private LocalDateTime aankoopTijd;
+
+    @Column(nullable = false)
+    private LocalDateTime aankoopTijd = LocalDateTime.now();
 
 //    public Ticket() {}
 
