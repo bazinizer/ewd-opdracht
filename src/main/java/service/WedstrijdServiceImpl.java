@@ -1,6 +1,8 @@
 package service;
 
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -37,6 +39,14 @@ public class WedstrijdServiceImpl implements WedstrijdService {
     public int countTicketsByUserIdAndWedstrijdId(String username, Long wedstrijdId) {
         return ticketRepository.countByUserUsernameAndWedstrijdId(username, wedstrijdId);
     }
+    @Override
+    public Set<String> findDisciplinesBySportId(Long sportId) {
+        List<Wedstrijd> wedstrijden = wedstrijdRepository.findBySportId(sportId);
+        return wedstrijden.stream()
+                          .flatMap(w -> w.getDisciplines().stream())
+                          .collect(Collectors.toSet());
+    }
+    
 
 
     @Override

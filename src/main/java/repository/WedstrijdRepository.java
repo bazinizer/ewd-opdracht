@@ -11,4 +11,7 @@ public interface WedstrijdRepository extends CrudRepository<Wedstrijd, Long> {
 	List<Wedstrijd> findAllByOrderByDatumTijdAsc();
 
 	boolean existsByOlympicNumber1(int olympicNumber1);
+	
+	List<Wedstrijd> findBySportId(Long sportId);
+
 }

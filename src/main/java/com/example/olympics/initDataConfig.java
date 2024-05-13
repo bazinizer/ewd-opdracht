@@ -86,6 +86,7 @@ public class initDataConfig implements CommandLineRunner {
 
         HashSet<String> disciplinesVoetbal = new HashSet<>(Arrays.asList("Mannen", "Vrouwen"));
         Wedstrijd wedstrijdVoetbal = new Wedstrijd(voetbal, stadium1, LocalDateTime.now().plusDays(1), 100, 50, disciplinesVoetbal, generateOlympicNumber(), generateOlympicNumber());
+        wedstrijdService.save(wedstrijdVoetbal);
 
         HashSet<String> disciplinesTennis = new HashSet<>(Arrays.asList("Enkel", "Dubbel"));
         Wedstrijd wedstrijdTennis = new Wedstrijd(tennis, stadium2, LocalDateTime.now().plusDays(2), 50, 30, disciplinesTennis, generateOlympicNumber(), generateOlympicNumber());

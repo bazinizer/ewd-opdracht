@@ -1,6 +1,7 @@
 package service;
 
 import java.util.List;
+import java.util.Set;
 
 import domain.Wedstrijd;
 
@@ -12,4 +13,5 @@ public interface WedstrijdService {
 	List<Wedstrijd> findAllSortedByDate();
 	int countTicketsByUserIdAndWedstrijdId(String username, Long wedstrijdId);
 	boolean existsByOlympicNumber1(int olympicNumber1);
+	Set<String> findDisciplinesBySportId(Long sportId);
 }

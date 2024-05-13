@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import domain.Sport;
 import domain.Wedstrijd;
 import service.SportService;
 import service.StadiumService;
@@ -28,13 +29,15 @@ public class CreateWedstrijdController {
     private WedstrijdService wedstrijdService;
     @Autowired
     private WedstrijdValidator wedstrijdValidator;
-
+    
     @GetMapping("/{sportId}/create")
     public String showCreateForm(@PathVariable Long sportId, Model model) {
+        Sport sport = sportService.findById(sportId);
         Wedstrijd newWedstrijd = new Wedstrijd();
-        newWedstrijd.setSport(sportService.findById(sportId)); 
+        newWedstrijd.setSport(sport);
         model.addAttribute("wedstrijd", newWedstrijd);
         model.addAttribute("stadiums", stadiumService.findAll());
+        model.addAttribute("disciplines", wedstrijdService.findDisciplinesBySportId(sportId)); // Haal disciplines op
         return "create-wedstrijd";
     }
 
@@ -45,10 +48,8 @@ public class CreateWedstrijdController {
             model.addAttribute("stadiums", stadiumService.findAll());
             return "create-wedstrijd";
         }
-        wedstrijd.setSport(sportService.findById(sportId)); 
+        wedstrijd.setSport(sportService.findById(sportId));
         wedstrijdService.save(wedstrijd);
-        return "redirect:/wedstrijden/" + sportId; 
+        return "redirect:/wedstrijden/" + sportId;
     }
 }
-
-

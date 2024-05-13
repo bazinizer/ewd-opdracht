@@ -28,7 +28,8 @@ public class WedstrijdController {
     private TicketService ticketService;
     @Autowired
     private StadiumService stadiumService;
-
+    @Autowired
+    private WedstrijdValidator wedstrijdValidator;
     
 
     @GetMapping
