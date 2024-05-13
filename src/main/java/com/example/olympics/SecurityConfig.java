@@ -43,7 +43,9 @@ public class SecurityConfig{
                         		.requestMatchers("/css/**").permitAll()
                                 .requestMatchers("/403**").permitAll()
                                 .requestMatchers("/sport/**").hasAnyRole("USER","ADMIN")
-                                .requestMatchers("/wedstrijden/{id}/**").hasAnyRole("USER","ADMIN"))
+                                .requestMatchers("/wedstrijden/{id}/create/**").hasRole("ADMIN")
+                                .requestMatchers("/wedstrijden/**").hasAnyRole("USER", "ADMIN"))
+                				
                 				
                 
                 .formLogin(form ->

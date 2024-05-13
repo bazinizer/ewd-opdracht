@@ -11,4 +11,5 @@ public interface WedstrijdService {
     Wedstrijd findById(Long id);
 	List<Wedstrijd> findAllSortedByDate();
 	int countTicketsByUserIdAndWedstrijdId(String username, Long wedstrijdId);
+	boolean existsByOlympicNumber1(int olympicNumber1);
 }

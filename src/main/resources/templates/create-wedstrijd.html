@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+        <link rel="stylesheet" th:href="@{/css/style.css}" />
+    
+    <title>Nieuwe Wedstrijd Toevoegen</title>
+</head>
+<body>
+    <h1>Nieuwe Wedstrijd Toevoegen</h1>
+    <form th:action="@{'/wedstrijden/' + ${wedstrijd.sport.id} + '/create'}" th:object="${wedstrijd}" method="post">
+        <!-- Input velden voor nieuwe wedstrijd -->
+        <div>
+            <label for="datumTijd">Datum en Tijd:</label>
+            <input type="datetime-local" id="datumTijd" name="datumTijd" th:value="*{datumTijd}" required />
+        </div>
+        <div>
+            <label for="stadium">Stadium:</label>
+            <select id="stadium" name="stadium">
+                <option th:each="stadium : ${stadiums}" th:value="${stadium.id}" th:text="${stadium.naam}"></option>
+            </select>
+        </div>
+        <div>
+            <label for="prijsPerTicket">Prijs per Ticket:</label>
+            <input type="text" id="prijsPerTicket" name="prijsPerTicket" th:value="*{prijsPerTicket}" required />
+        </div>
+        <!-- Andere velden zoals beschreven in je opdracht -->
+        <button type="submit">Wedstrijd Toevoegen</button>
+    </form>
+</body>
+</html>

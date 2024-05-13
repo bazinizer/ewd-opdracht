@@ -48,4 +48,8 @@ public class WedstrijdServiceImpl implements WedstrijdService {
     public Wedstrijd findById(Long id) {
         return wedstrijdRepository.findById(id).orElse(null);
     }
+    @Override
+    public boolean existsByOlympicNumber1(int olympicNumber1) {
+        return wedstrijdRepository.existsByOlympicNumber1(olympicNumber1);
+    }
 }
