@@ -28,8 +28,7 @@ public class WedstrijdController {
     private TicketService ticketService;
     @Autowired
     private StadiumService stadiumService;
-    @Autowired
-    private WedstrijdValidator wedstrijdValidator;
+
     
 
     @GetMapping
@@ -42,7 +41,8 @@ public class WedstrijdController {
     public String getWedstrijd(@PathVariable Long id, Model model) {
         org.springframework.security.core.Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String username = auth.getName();
-
+        
+        model.addAttribute("disciplines", wedstrijdService.findDisciplinesBySportId(id));
         model.addAttribute("wedstrijd", wedstrijdService.findById(id));
         model.addAttribute("tickets", ticketService.countByUserUsernameAndWedstrijdId(username, id));
         model.addAttribute("isAdmin", auth.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN")));

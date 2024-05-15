@@ -1,6 +1,8 @@
 package com.example.olympics;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -9,9 +11,11 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 import domain.Sport;
 import domain.Wedstrijd;
+import jakarta.validation.Valid;
 import service.SportService;
 import service.StadiumService;
 import service.WedstrijdService;
@@ -32,17 +36,21 @@ public class CreateWedstrijdController {
     
     @GetMapping("/{sportId}/create")
     public String showCreateForm(@PathVariable Long sportId, Model model) {
+        org.springframework.security.core.Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String currentUserName = authentication.getName();
+        
         Sport sport = sportService.findById(sportId);
         Wedstrijd newWedstrijd = new Wedstrijd();
         newWedstrijd.setSport(sport);
+        model.addAttribute("username", currentUserName);
         model.addAttribute("wedstrijd", newWedstrijd);
         model.addAttribute("stadiums", stadiumService.findAll());
-        model.addAttribute("disciplines", wedstrijdService.findDisciplinesBySportId(sportId)); // Haal disciplines op
+        model.addAttribute("disciplines", wedstrijdService.findDisciplinesBySportId(sportId)); 
         return "create-wedstrijd";
     }
 
     @PostMapping("/{sportId}/create")
-    public String createWedstrijd(@PathVariable Long sportId, @ModelAttribute Wedstrijd wedstrijd, BindingResult result, Model model) {
+    public String createWedstrijd(@PathVariable Long sportId, @Valid Wedstrijd wedstrijd, BindingResult result, Model model) {
         wedstrijdValidator.validate(wedstrijd, result);
         if (result.hasErrors()) {
             model.addAttribute("stadiums", stadiumService.findAll());
