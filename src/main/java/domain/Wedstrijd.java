@@ -2,27 +2,25 @@ package domain;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.HashSet;
 import java.util.Set;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import lombok.AccessLevel;
+import jakarta.validation.constraints.DecimalMax;
+import jakarta.validation.constraints.DecimalMin;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
+import validation.OlympischNummerValidation;
+import validation.WedstrijdDatum;
 
 @Entity
 @Data
@@ -46,19 +44,33 @@ public class Wedstrijd implements Serializable {
     @ElementCollection
     private Set<String> disciplines;
 
+
+    @WedstrijdDatum
     private LocalDateTime datumTijd;
+
+    @Min(0) @Max(50)
     private int vrijePlaatsen;
+
+    @DecimalMin("0.01") @DecimalMax("149.99")
     private double prijsPerTicket;
 
+    @OlympischNummerValidation
+    @Column(unique = true)
+    private int olympicNumber1; 
+
+    private int olympicNumber2; 
 
 
-    public Wedstrijd(Sport sport, Stadium stadium, LocalDateTime datumTijd, int vrijePlaatsen, double prijsPerTicket, Set<String> disciplines) {
+
+    public Wedstrijd(Sport sport, Stadium stadium, LocalDateTime datumTijd, int vrijePlaatsen, double prijsPerTicket, Set<String> disciplines, int nummer1, int nummer2) {
         this.sport = sport;
         this.stadium = stadium;
         this.datumTijd = datumTijd;
         this.vrijePlaatsen = vrijePlaatsen;
         this.prijsPerTicket = prijsPerTicket;
         this.disciplines = disciplines;
+        this.olympicNumber1 = nummer1;
+        this.olympicNumber2 = nummer2;
     }
     public Wedstrijd(){
     	

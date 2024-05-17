@@ -1,9 +1,17 @@
 package repository;
 
+import java.util.List;
+
 import org.springframework.data.repository.CrudRepository;
 
 import domain.Wedstrijd;
 
 public interface WedstrijdRepository extends CrudRepository<Wedstrijd, Long> {
-    // You can define custom query methods if needed
+
+	List<Wedstrijd> findAllByOrderByDatumTijdAsc();
+
+	boolean existsByOlympicNumber1(int olympicNumber1);
+	
+	List<Wedstrijd> findBySportId(Long sportId);
+
 }

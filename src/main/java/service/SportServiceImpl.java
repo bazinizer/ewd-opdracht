@@ -33,4 +33,9 @@ public class SportServiceImpl implements SportService{
         return (List<Sport>) sportRepository.findAll();
     }
 
+    @Override
+    public Sport findById(Long id) {
+        return sportRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid sport Id:" + id));
+    }
+
 }

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -26,89 +27,79 @@ import service.TicketService;
 import service.WedstrijdService;
 
 @Configuration
-	public class initDataConfig implements CommandLineRunner{
-	
-	@Autowired
-	private MyUserRepository myUserRepository;
-	private PasswordEncoder encoder = new BCryptPasswordEncoder();
+public class initDataConfig implements CommandLineRunner {
 
-	    @Autowired
-	    private SportService sportService;
-	    @Autowired
-	    private SportRepository sportRepository;
-	    @Autowired
-	    private WedstrijdService wedstrijdService;
-	    
-	    @Autowired
-	    private StadiumService stadiumService;
-	    @Autowired
-	    private TicketService ticketService;
-	    
-	    
-	    
-	    
+    @Autowired
+    private MyUserRepository myUserRepository;
+    private PasswordEncoder encoder = new BCryptPasswordEncoder();
 
-	    @Override
-	    public void run(String... args) {
-	    	
-	        var user =
-	        		MyUser.builder()
-	                .username("Baz")
-	                .role(Role.USER)
-	                .password(encoder.encode("123"))
-	                .build();
-	        var userWithNoTickets =
-	                MyUser.builder()
-	                    .username("Mark")
-	                    .role(Role.USER)
-	                    .password(encoder.encode("123"))
-	                    .build();
-	    	
-	        var admin =
-	        		MyUser.builder()
-	                .username("admin")
-	                .role(Role.ADMIN)
-	                .password(encoder.encode("123"))
-	                .build();
-	        
-		List<MyUser> userList =  Arrays.asList(admin, user,userWithNoTickets);
-		myUserRepository.saveAll(userList);
-		
-		
-	    	List<Sport> sports = new ArrayList<>();
-	    	sports.add(new Sport("Voetbal"));
-	    	sports.add(new Sport("Hockey"));
-	    	sports.add(new Sport("Tennis"));
-	    	sports.add(new Sport("Rugby"));
-	    	sports.add(new Sport("Bolder"));
-	    	
-	    	sportRepository.saveAll(sports); 
-	    	
-	    	 // Stadiums
-	        List<Stadium> stadiums = new ArrayList<>(Arrays.asList(
-	            new Stadium("Stadium 1", 50000),
-	            new Stadium("Stadium 2", 30000)
-	        ));
-	        stadiumService.saveAll(stadiums);
+    @Autowired
+    private SportService sportService;
+    @Autowired
+    private SportRepository sportRepository;
+    @Autowired
+    private WedstrijdService wedstrijdService;
+    @Autowired
+    private StadiumService stadiumService;
+    @Autowired
+    private TicketService ticketService;
 
-	        // Retrieve saved sports and stadiums to use in Wedstrijden
-	        Sport voetbal = sportService.findAll().stream().filter(s -> s.getNaam().equals("Voetbal")).findFirst().orElse(null);
-	        Sport tennis = sportService.findAll().stream().filter(s -> s.getNaam().equals("Tennis")).findFirst().orElse(null);
-	        Stadium stadium1 = stadiumService.findAll().get(0);
-	        Stadium stadium2 = stadiumService.findAll().get(1);
+    @Override
+    public void run(String... args) {
+        var user = MyUser.builder()
+            .username("Baz")
+            .role(Role.USER)
+            .password(encoder.encode("123"))
+            .build();
+        var userWithNoTickets = MyUser.builder()
+            .username("Mark")
+            .role(Role.USER)
+            .password(encoder.encode("123"))
+            .build();
+        var admin = MyUser.builder()
+            .username("admin")
+            .role(Role.ADMIN)
+            .password(encoder.encode("123"))
+            .build();
 
-	        // Wedstrijden
-	        HashSet<String> disciplinesVoetbal = new HashSet<>(Arrays.asList("Mannen", "Vrouwen"));
-	        Wedstrijd wedstrijdVoetbal = new Wedstrijd(voetbal, stadium1, LocalDateTime.now().plusDays(1), 100, 50, disciplinesVoetbal);
+        List<MyUser> userList = Arrays.asList(admin, user, userWithNoTickets);
+        myUserRepository.saveAll(userList);
 
-	        HashSet<String> disciplinesTennis = new HashSet<>(Arrays.asList("Enkel", "Dubbel"));
-	        Wedstrijd wedstrijdTennis = new Wedstrijd(tennis, stadium2, LocalDateTime.now().plusDays(2), 50, 30, disciplinesTennis);
+        List<Sport> sports = new ArrayList<>();
+        sports.add(new Sport("Voetbal"));
+        sports.add(new Sport("Hockey"));
+        sports.add(new Sport("Tennis"));
+        sports.add(new Sport("Rugby"));
+        sports.add(new Sport("Bolder"));
+        sportRepository.saveAll(sports);
 
-	        wedstrijdService.saveAll(Arrays.asList(wedstrijdVoetbal, wedstrijdTennis));
-	        
-	        
-	        Ticket ticket1 = new Ticket(wedstrijdVoetbal, user, 2, 100.0);
-	        Ticket ticket2 = new Ticket(wedstrijdTennis, user, 1, 30.0);
-	        ticketService.saveAll(Arrays.asList(ticket1, ticket2));
-	    }
-	}
+        List<Stadium> stadiums = new ArrayList<>(Arrays.asList(
+            new Stadium("Stadium 1", 50000),
+            new Stadium("Stadium 2", 30000)
+        ));
+        stadiumService.saveAll(stadiums);
+
+        Sport voetbal = sportService.findAll().stream().filter(s -> s.getNaam().equals("Voetbal")).findFirst().orElse(null);
+        Sport tennis = sportService.findAll().stream().filter(s -> s.getNaam().equals("Tennis")).findFirst().orElse(null);
+        Stadium stadium1 = stadiumService.findAll().get(0);
+        Stadium stadium2 = stadiumService.findAll().get(1);
+
+        HashSet<String> disciplinesVoetbal = new HashSet<>(Arrays.asList("Mannen", "Vrouwen"));
+        Wedstrijd wedstrijdVoetbal = new Wedstrijd(voetbal, stadium1, LocalDateTime.now().plusDays(1), 100, 50, disciplinesVoetbal, generateOlympicNumber(), generateOlympicNumber());
+        wedstrijdService.save(wedstrijdVoetbal);
+
+        HashSet<String> disciplinesTennis = new HashSet<>(Arrays.asList("Enkel", "Dubbel"));
+        Wedstrijd wedstrijdTennis = new Wedstrijd(tennis, stadium2, LocalDateTime.now().plusDays(2), 50, 30, disciplinesTennis, generateOlympicNumber(), generateOlympicNumber());
+
+        wedstrijdService.saveAll(Arrays.asList(wedstrijdVoetbal, wedstrijdTennis));
+
+        Ticket ticket1 = new Ticket(wedstrijdVoetbal, user, 2, 100.0);
+        Ticket ticket2 = new Ticket(wedstrijdTennis, user, 1, 30.0);
+        ticketService.saveAll(Arrays.asList(ticket1, ticket2));
+    }
+
+    private int generateOlympicNumber() {
+        // Generate a valid Olympic number here, ensuring it adheres to your rules
+        return new Random().nextInt(90000) + 10000; // Example to generate a number between 10000 and 99999
+    }
+}

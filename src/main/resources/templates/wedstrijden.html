@@ -9,7 +9,7 @@
     <header>Wedstrijden Overzicht</header>
     <ul>
         <li th:each="wedstrijd : ${wedstrijden}">
-            <a th:href="@{'/wedstrijden/' + ${wedstrijd.id}}" th:text="${wedstrijd.sport.naam + ' - ' + wedstrijd.datumTijd}">Wedstrijd</a>
+            <a th:href="@{'/wedstrijden/' + ${sport.id}}" th:text="${wedstrijd.sport.naam + ' - ' + wedstrijd.datumTijd}">Wedstrijd</a>
         </li>
     </ul>
 </body>

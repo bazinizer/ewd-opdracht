@@ -17,6 +17,7 @@ import service.TicketService;
 import service.TicketServiceImpl;
 import service.WedstrijdService;
 import service.WedstrijdServiceImpl;
+import validator.WedstrijdValidator;
 
 @SpringBootApplication
 @EnableJpaRepositories("repository")
@@ -30,7 +31,6 @@ public class OlympicsApplication implements WebMvcConfigurer {
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
         registry.addRedirectViewController("/","/sport");
-        registry.addViewController("/wedstrijden").setViewName("wedstrijden");
         registry.addViewController("/403").setViewName("403");
         
         
@@ -55,6 +55,11 @@ public class OlympicsApplication implements WebMvcConfigurer {
     @Bean
     public TicketService ticketService() {
     	return new TicketServiceImpl();
+    }
+    
+    @Bean
+    public WedstrijdValidator wedstrijdValidator() {
+    	return new WedstrijdValidator();
     }
     
 }
