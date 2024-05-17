@@ -54,10 +54,12 @@ public class WedstrijdServiceImpl implements WedstrijdService {
         return (List<Wedstrijd>) wedstrijdRepository.findAll();
     }
 
-    @Override
-    public List<Wedstrijd> findById(Long id) {
-        return (List<Wedstrijd>) wedstrijdRepository.findById(id).orElse(null);
+    @Override 
+    public List<Wedstrijd> findBySportId(Long sportId){
+		return wedstrijdRepository.findBySportId(sportId);
+    	
     }
+    
     @Override
     public boolean existsByOlympicNumber1(int olympicNumber1) {
         return wedstrijdRepository.existsByOlympicNumber1(olympicNumber1);
