@@ -1,13 +1,12 @@
 package domain;
 
 import java.io.Serializable;
-import java.util.HashSet;
 import java.util.Set;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
+import org.eclipse.persistence.internal.oxm.schema.model.List;
+
+import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -28,14 +27,18 @@ public class Sport implements Serializable{
     private Long id;
 
     private String naam;
+    
+    @ElementCollection
+    private Set<String> disciplines;
 
     @OneToMany(mappedBy = "sport")
     private Set<Wedstrijd> wedstrijden;
 
     public Sport() {}
 
-    public Sport(String naam) {
+    public Sport(String naam, Set<String> disciplines ) {
         this.naam = naam;
+        this.disciplines = disciplines;
     }
 }
 

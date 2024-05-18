@@ -49,7 +49,7 @@ public class WedstrijdController {
         String username = auth.getName();
 
         model.addAttribute("wedstrijden", wedstrijdService.findBySportId(sportId));
-        model.addAttribute("sport", sportService.findById(sportId)); // Voeg toe om de sportnaam te tonen
+        model.addAttribute("sport", sportService.findById(sportId)); 
         model.addAttribute("isAdmin", auth.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN")));
 
         return "wedstrijden-detail";

@@ -66,40 +66,34 @@ public class initDataConfig implements CommandLineRunner {
         myUserRepository.saveAll(userList);
 
         List<Sport> sports = new ArrayList<>();
-        sports.add(new Sport("Voetbal"));
-        sports.add(new Sport("Hockey"));
-        sports.add(new Sport("Tennis"));
-        sports.add(new Sport("Rugby"));
-        sports.add(new Sport("Bolder"));
+        sports.add(new Sport("Atletiek", new HashSet<>(Arrays.asList("100m sprint", "Marathon"))));
+        sports.add(new Sport("Zwemmen", new HashSet<>(Arrays.asList("50m vrije slag", "200m schoolslag"))));
+        sports.add(new Sport("Gymnastiek", new HashSet<>(Arrays.asList("Rekstok", "Vloer"))));
+        sports.add(new Sport("Judo", new HashSet<>(Arrays.asList("Lichtgewicht", "Zwaargewicht"))));
+        sports.add(new Sport("Boogschieten", new HashSet<>(Arrays.asList("Recurve", "Compound"))));
         sportRepository.saveAll(sports);
 
         List<Stadium> stadiums = new ArrayList<>(Arrays.asList(
-            new Stadium("Stadium 1", 50000),
-            new Stadium("Stadium 2", 30000)
+            new Stadium("Olympisch Stadion", 50000),
+            new Stadium("Aquatics Center", 15000)
         ));
         stadiumService.saveAll(stadiums);
 
-        Sport voetbal = sportService.findAll().stream().filter(s -> s.getNaam().equals("Voetbal")).findFirst().orElse(null);
-        Sport tennis = sportService.findAll().stream().filter(s -> s.getNaam().equals("Tennis")).findFirst().orElse(null);
-        Stadium stadium1 = stadiumService.findAll().get(0);
-        Stadium stadium2 = stadiumService.findAll().get(1);
+        // Voorbeeld voor Atletiek en Zwemmen
+        Sport atletiek = sports.get(0);
+        Sport zwemmen = sports.get(1);
+        Stadium stadion = stadiums.get(0);
 
-        HashSet<String> disciplinesVoetbal = new HashSet<>(Arrays.asList("Mannen", "Vrouwen"));
-        Wedstrijd wedstrijdVoetbal = new Wedstrijd(voetbal, stadium1, LocalDateTime.now().plusDays(1), 100, 50, disciplinesVoetbal, generateOlympicNumber(), generateOlympicNumber());
-        wedstrijdService.save(wedstrijdVoetbal);
+        // Creëer wedstrijden voor Atletiek
+        wedstrijdService.save(new Wedstrijd(atletiek, stadion, LocalDateTime.now().plusDays(1), 50, 20.0, atletiek.getDisciplines(), generateOlympicNumber(), generateOlympicNumber()));
 
-        HashSet<String> disciplinesTennis = new HashSet<>(Arrays.asList("Enkel", "Dubbel"));
-        Wedstrijd wedstrijdTennis = new Wedstrijd(tennis, stadium2, LocalDateTime.now().plusDays(2), 50, 30, disciplinesTennis, generateOlympicNumber(), generateOlympicNumber());
-
-        wedstrijdService.saveAll(Arrays.asList(wedstrijdVoetbal, wedstrijdTennis));
-
-        Ticket ticket1 = new Ticket(wedstrijdVoetbal, user, 2, 100.0);
-        Ticket ticket2 = new Ticket(wedstrijdTennis, user, 1, 30.0);
-        ticketService.saveAll(Arrays.asList(ticket1, ticket2));
+        // Creëer wedstrijden voor Zwemmen
+        wedstrijdService.save(new Wedstrijd(zwemmen, stadion, LocalDateTime.now().plusDays(2), 30, 25.0, zwemmen.getDisciplines(), generateOlympicNumber(), generateOlympicNumber()));
+        
+        // Meer wedstrijden kunnen op soortgelijke wijze worden toegevoegd
     }
 
     private int generateOlympicNumber() {
-        // Generate a valid Olympic number here, ensuring it adheres to your rules
-        return new Random().nextInt(90000) + 10000; // Example to generate a number between 10000 and 99999
+        return new Random().nextInt(90000) + 10000; // Zorgt voor een nummer tussen 10000 en 99999
     }
 }
