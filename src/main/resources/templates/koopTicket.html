@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Koop Tickets</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}" />
+</head>
+<body>
+    <h1 th:text="'Koop tickets voor ' + ${wedstrijd.sport.naam} + ' - ' + ${wedstrijd.datumTijd}"></h1>
+
+    <form th:action="@{'/wedstrijden/' + ${wedstrijd.id} + '/koopTicket'}" method="post">
+        <input type="number" name="aantal" min="1" th:max="20" required />
+        <button type="submit">Koop Tickets</button>
+    </form>
+
+    <a th:href="@{/wedstrijden}">Terug naar wedstrijden</a>
+</body>
+</html>

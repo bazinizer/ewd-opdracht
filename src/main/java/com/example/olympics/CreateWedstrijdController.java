@@ -37,7 +37,7 @@ public class CreateWedstrijdController {
         newWedstrijd.setSport(sport);
         model.addAttribute("wedstrijd", newWedstrijd);
         model.addAttribute("stadiums", stadiumService.findAll());
-        model.addAttribute("disciplines", wedstrijdService.findDisciplinesBySportId(sportId)); // Haal disciplines op
+        model.addAttribute("disciplines", wedstrijdService.findDisciplinesBySportId(sportId)); 
         return "create-wedstrijd";
     }
 

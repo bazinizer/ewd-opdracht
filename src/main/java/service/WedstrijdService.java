@@ -14,4 +14,5 @@ public interface WedstrijdService {
 	int countTicketsByUserIdAndWedstrijdId(String username, Long wedstrijdId);
 	boolean existsByOlympicNumber1(int olympicNumber1);
 	Set<String> findDisciplinesBySportId(Long sportId);
+	Wedstrijd findById(Long wedstrijdId);
 }

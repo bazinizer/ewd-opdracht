@@ -23,6 +23,8 @@ public class MyUserService implements UserDetailsService{
 
 	@Autowired
 	private MyUserRepository myUserRepository;
+	
+	
 
 	  @Override
 	  public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -36,4 +38,11 @@ public class MyUserService implements UserDetailsService{
 	  private Collection<? extends GrantedAuthority> convertAuthorities(Role role) {
 		    return Collections.singletonList(new SimpleGrantedAuthority("ROLE_" + role.toString()));
 	  }
-}
+	    public Long getUserIdByUsername(String username) {
+	        return myUserRepository.findUserIdByUsername(username)
+	                .orElseThrow(() -> new UsernameNotFoundException("User not found with username: " + username));
+	    }
+	     
+	}
+
+

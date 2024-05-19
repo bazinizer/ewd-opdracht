@@ -21,7 +21,7 @@
                         <span th:text="${wedstrijd.stadium.naam}">Stadium</span>
                         <span th:text="'Open plaatsen: ' + ${wedstrijd.vrijePlaatsen}">Open plaatsen</span>
                         <span th:if="${isAdmin or wedstrijd.vrijePlaatsen > 0}" th:text="${wedstrijd.prijsPerTicket} + ' EUR'">Prijs per Ticket</span>
-                        <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onclick="location.href='/koopTicket.html'">Koop ticket</button>
+                        <a th:href="@{'/wedstrijden/' + ${wedstrijd.id} + '/koopTicket'}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Koop ticket</a>
                     </li>
                 </ul>
             </div>

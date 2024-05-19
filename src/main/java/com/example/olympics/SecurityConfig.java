@@ -44,6 +44,7 @@ public class SecurityConfig{
                                 .requestMatchers("/403**").permitAll()
                                 .requestMatchers("/sport/**").hasAnyRole("USER","ADMIN")
                                 .requestMatchers("/wedstrijden/{id}/create/**").hasRole("ADMIN")
+                                .requestMatchers("/wedstrijden/{id}/koopTicket/**").hasRole("USER")
                                 .requestMatchers("/wedstrijden/**").hasAnyRole("USER", "ADMIN"))
                 				
                 				
