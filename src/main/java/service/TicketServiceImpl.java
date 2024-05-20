@@ -1,7 +1,9 @@
 package service;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -48,10 +50,16 @@ public class TicketServiceImpl implements TicketService {
     }
     @Override
     public List<Ticket> findTicketsByUser(String username) {
-        return ticketRepository.findByUser_Username(username);
+        List<Ticket> tickets = ticketRepository.findByUser_Username(username);
+
+        return tickets.stream()
+                      .sorted(Comparator
+                              .comparing((Ticket t) -> t.getWedstrijd().getSport().getNaam())
+                              .thenComparing(t -> t.getWedstrijd().getDatumTijd()))
+                      .collect(Collectors.toList());
     }
     @Override
-    public int countByUserId(Long userId) {
+    public int countByUserId(Long userId)  {
         return ticketRepository.countByUserId(userId);
     }
     @Override
@@ -75,10 +83,6 @@ public class TicketServiceImpl implements TicketService {
     }
     @Override
     public String purchaseTickets(Long userId, Long wedstrijdId, int amount) {
-//        String validationResult = ticketValidator.validateTicketPurchase(userId, wedstrijdId, amount);
-//        if (validationResult != null) {
-//            return validationResult;
-//        }
 
         MyUser user = myUserRepository.findById(userId).orElse(null);
         Wedstrijd wedstrijd = wedstrijdRepository.findById(wedstrijdId).orElse(null);
@@ -90,6 +94,13 @@ public class TicketServiceImpl implements TicketService {
 
         return amount + " tickets successfully purchased!";
     }
+    public int getTotalTicketsBoughtForWedstrijdByUser(Long wedstrijdId, Long userId) {
+        List<Ticket> tickets = ticketRepository.findByWedstrijdIdAndUserId(wedstrijdId, userId);
+        return tickets.stream().mapToInt(Ticket::getAantal).sum();
+    }
+
+
+
 }
 
 

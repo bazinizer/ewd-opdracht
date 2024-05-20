@@ -17,6 +17,7 @@ import service.TicketService;
 import service.TicketServiceImpl;
 import service.WedstrijdService;
 import service.WedstrijdServiceImpl;
+import validator.TicketPurchaseValidator;
 import validator.WedstrijdValidator;
 
 @SpringBootApplication
@@ -60,6 +61,10 @@ public class OlympicsApplication implements WebMvcConfigurer {
     @Bean
     public WedstrijdValidator wedstrijdValidator() {
     	return new WedstrijdValidator();
+    }
+    @Bean
+    public TicketPurchaseValidator purchaseValidator() {
+    	return new TicketPurchaseValidator();
     }
     
 }

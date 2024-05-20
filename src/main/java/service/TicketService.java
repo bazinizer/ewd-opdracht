@@ -17,5 +17,9 @@ public interface TicketService {
     int getTotalTicketsBoughtByUser(Long userId);
     int getTicketsBoughtForWedstrijdByUser(Long wedstrijdId, Long userId);
 	String purchaseTickets(Long userId, Long wedstrijdId, int amount);
+    public int getTotalTicketsBoughtForWedstrijdByUser(Long wedstrijdId, Long userId);
+
+
+	
     
 }

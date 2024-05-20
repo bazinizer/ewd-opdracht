@@ -63,3 +63,24 @@ button {
 button:hover {
     background-color: #0056b3;
 }
+.ticket-info {
+    border: 1px solid #ddd;
+    padding: 20px;
+    margin-top: 20px;
+    width: 300px;
+    box-shadow: 0 0 10px #ccc;
+}
+
+.ticket-info form, .ticket-info div {
+    margin-top: 10px;
+}
+
+input[type="number"], button {
+    padding: 5px;
+    margin-right: 10px;
+}
+
+button {
+    cursor: pointer;
+}
+

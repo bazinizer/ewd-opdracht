@@ -1,5 +1,7 @@
 package com.example.olympics;
 
+import java.time.format.DateTimeFormatter;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -10,11 +12,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import domain.MyUser;
 import domain.Wedstrijd;
 import service.MyUserService;
 import service.TicketService;
 import service.WedstrijdService;
+import validator.TicketPurchaseValidator;
 
 @Controller
 @RequestMapping("/wedstrijden")
@@ -27,6 +29,8 @@ public class TicketPurchaseController {
     private WedstrijdService wedstrijdService;
     @Autowired
     private  MyUserService myUserService;
+    @Autowired
+    private  TicketPurchaseValidator purchaseValidator;
 
     @GetMapping("/{wedstrijdId}/koopTicket")
     public String showTicketPurchase(@PathVariable Long wedstrijdId, Model model) {
@@ -36,6 +40,9 @@ public class TicketPurchaseController {
         
         Wedstrijd wedstrijd = wedstrijdService.findById(wedstrijdId);
         int ticketsAlreadyBought = ticketService.getTicketsBoughtForWedstrijdByUser(wedstrijdId, userId);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        String formattedDate = wedstrijd.getDatumTijd().format(formatter);
+        model.addAttribute("formattedDate", formattedDate);
 
         model.addAttribute("wedstrijd", wedstrijd);
         model.addAttribute("ticketsAlreadyBought", ticketsAlreadyBought);
@@ -49,9 +56,17 @@ public class TicketPurchaseController {
         org.springframework.security.core.Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String userName = authentication.getName();
         Long userId = myUserService.getUserIdByUsername(userName);
-        String response = ticketService.purchaseTickets(userId, wedstrijdId, aantal);
 
-        model.addAttribute("message", response); 
+        // Validate the ticket purchase attempt
+        String validationMessage = purchaseValidator.validateTicketPurchase(userId, wedstrijdId, aantal);
+        if (validationMessage != null) {
+            model.addAttribute("error", validationMessage);
+            return showTicketPurchase(wedstrijdId, model); // Reload the purchase page with an error message
+        }
+
+        // Proceed with ticket purchase if validation is successful
+        ticketService.purchaseTickets(userId, wedstrijdId, aantal);
+        model.addAttribute("message", aantal + " tickets succesvol aangekocht");
         return "redirect:/wedstrijden/" + wedstrijdId;
     }
 }

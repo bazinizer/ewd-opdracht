@@ -14,5 +14,6 @@ public interface TicketRepository extends CrudRepository<Ticket, Long> {
 	int countByUserUsernameAndWedstrijdId(String username, Long wedstrijdId);
 	int countByUserId(Long userId);
 	int countByWedstrijdIdAndUserId(Long wedstrijdId, Long userId);
+	List<Ticket> findByWedstrijdIdAndUserId(Long wedstrijdId, Long userId);
 
 }
