@@ -2,6 +2,7 @@ package com.example.olympics;
 
 import org.springframework.boot.SpringApplication;
 
+
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.Bean;
@@ -18,12 +19,11 @@ import service.TicketService;
 import service.TicketServiceImpl;
 import service.WedstrijdService;
 import service.WedstrijdServiceImpl;
-import validation.DateTimeValidation;
 import validator.DateTimeValidator;
 import validator.OlympicNumber1Validator;
 import validator.OlympicNumber2Validator;
 import validator.TicketPurchaseValidator;
-import validator.WedstrijdValidator;
+
 
 
 @SpringBootApplication
@@ -64,10 +64,7 @@ public class OlympicsApplication implements WebMvcConfigurer {
     	return new TicketServiceImpl();
     }
     
-    @Bean
-    public WedstrijdValidator wedstrijdValidator() {
-    	return new WedstrijdValidator();
-    }
+
     @Bean
     public DateTimeValidator dateTimeValidation() {
     	return new DateTimeValidator();

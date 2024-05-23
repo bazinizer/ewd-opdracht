@@ -1,21 +1,44 @@
 package validator;
 
-import jakarta.validation.ConstraintValidator;
-import jakarta.validation.ConstraintValidatorContext;
-import validation.OlympicNumber1Validation;
+import java.util.List;
+import java.util.stream.Collectors;
 
-public class OlympicNumber1Validator implements ConstraintValidator<OlympicNumber1Validation, Integer> {
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.Errors;
+import org.springframework.validation.Validator;
+
+import domain.Wedstrijd;
+import service.WedstrijdService;
+
+public class OlympicNumber1Validator implements Validator {
+	@Autowired
+	private WedstrijdService service;
+
 
     @Override
-    public void initialize(OlympicNumber1Validation constraintAnnotation) {
+    public boolean supports(Class<?> clazz) {
+        return Wedstrijd.class.isAssignableFrom(clazz);
     }
 
     @Override
-    public boolean isValid(Integer value, ConstraintValidatorContext context) {
-        if (value == null) {
-            return false;
+    public void validate(Object target, Errors errors) {
+    	List<Integer> alreadyexists1 = service.findAll().stream().map(Wedstrijd::getOlympicNumber1).collect(Collectors.toList());
+
+        Wedstrijd wedstrijd = (Wedstrijd) target;
+        int olympicNumber1 = wedstrijd.getOlympicNumber1();
+
+        String number = String.valueOf(olympicNumber1);
+        System.out.println(number.charAt(0));
+        if (number.length() != 5) {
+            errors.rejectValue("olympicNumber1", "olympicNumber.format.invalid", "Olympisch nummer moet uit 5 cijfers bestaan, mag niet met 0 beginnen, en het eerste en het laatste cijfer moeten verschillend zijn.");
         }
-        String number = String.valueOf(value);
-        return number.length() == 5 && number.charAt(0) != '0' && number.charAt(0) != number.charAt(4);
+        if (number.charAt(0) == '0') {
+            errors.rejectValue("olympicNumber1", "olympicNumber.0.invalid", "Olympisch nummer moet uit 5 cijfers bestaan, mag niet met 0 beginnen, en het eerste en het laatste cijfer moeten verschillend zijn.");
+
+        }
+        if(alreadyexists1.contains(olympicNumber1)) {
+            errors.rejectValue("olympicNumber1", "olympicNumber.exists.invalid", "Olympisch nummer moet uit 5 cijfers bestaan, mag niet met 0 beginnen, en het eerste en het laatste cijfer moeten verschillend zijn.");
+        
+        }
     }
 }

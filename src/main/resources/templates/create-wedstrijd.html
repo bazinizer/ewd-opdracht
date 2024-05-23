@@ -3,16 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" th:href="@{/css/createWedstrijdStyle.css}" />
-    <title th:text="'Nieuwe Wedstrijd Toevoegen voor ' + ${wedstrijd.sport.naam}">Nieuwe Wedstrijd Toevoegen</title>
+  
 </head>
 <body>
     <div class="form-container">
-        <h1 th:text="'Nieuwe Wedstrijd Toevoegen voor ' + ${wedstrijd.sport.naam}">Nieuwe Wedstrijd Toevoegen</h1>
-        <form th:action="@{'/wedstrijden/' + ${wedstrijd.sport.id} + '/create'}" th:object="${wedstrijd}" method="post">
+        <h1 th:text="'Nieuwe Wedstrijd Toevoegen voor ' + ${sport.naam}">Nieuwe Wedstrijd Toevoegen</h1>
+        <form th:action="@{'/wedstrijden/' + ${sport.id} + '/create'}" th:object="${wedstrijd}" method="post">
+            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
             <div class="form-group">
                 <label for="datumTijd">Datum en Tijd:</label>
-                <input type="datetime-local" id="datumTijd" name="datumTijd" th:value="*{datumTijd}" required />
-                <div class="error" th:if="${#fields.hasErrors('datumTijd')}" th:errors="*{datumTijd}"></div>
+                <input type="datetime-local" id="datumTijd" name="datumTijd" th:field="*{datumTijd}" required />
+                <span class="error" th:if="${#fields.hasErrors('datumTijd')}" th:errors="*{datumTijd}"></span>
             </div>
             <div class="form-group">
                 <label for="stadium">Stadium:</label>
@@ -20,34 +21,34 @@
                     <option value="">Kies een stadium</option>
                     <option th:each="stadium : ${stadiums}" th:value="${stadium.id}" th:text="${stadium.naam}"></option>
                 </select>
-                <div class="error" th:if="${#fields.hasErrors('stadium.id')}" th:errors="*{stadium.id}"></div>
+                <span class="error" th:if="${#fields.hasErrors('stadium.id')}" th:errors="*{stadium.id}"></span>
             </div>
             <div class="form-group">
                 <label for="prijsPerTicket">Prijs per Ticket:</label>
-                <input type="text" id="prijsPerTicket" name="prijsPerTicket" th:value="*{prijsPerTicket}" required pattern="^\d{0,3}(\.\d{1,2})?$"  />
-                <div class="error" th:if="${#fields.hasErrors('prijsPerTicket')}" th:errors="*{prijsPerTicket}"></div>
+                <input type="text" id="prijsPerTicket" name="prijsPerTicket" th:field="*{prijsPerTicket}"   />
+                <span class="error" th:if="${#fields.hasErrors('prijsPerTicket')}" th:errors="*{prijsPerTicket}"></span>
             </div>
             <div class="form-group">
                 <label for="vrijePlaatsen">Aantal plaatsen:</label>
-                <input type="number" id="vrijePlaatsen" name="vrijePlaatsen" th:value="*{vrijePlaatsen}" required />
-                <div class="error" th:if="${#fields.hasErrors('vrijePlaatsen')}" th:errors="*{vrijePlaatsen}"></div>
+                <input type="number" id="vrijePlaatsen" name="vrijePlaatsen" th:field="*{vrijePlaatsen}" required />
+                <span class="error" th:if="${#fields.hasErrors('vrijePlaatsen')}" th:errors="*{vrijePlaatsen}"></span>
             </div>
             <div class="form-group">
                 <label for="olympicNumber1">Olympisch-nummer1:</label>
-                <input type="text" id="olympicNumber1" name="olympicNumber1" th:value="*{olympicNumber1}" required />
-                <div class="error" th:if="${#fields.hasErrors('olympicNumber1')}" th:errors="*{olympicNumber1}"></div>
+                <input type="text" id="olympicNumber1" name="olympicNumber1" th:field="*{olympicNumber1}" required />
+                <span class="error" th:if="${#fields.hasErrors('olympicNumber1')}" th:errors="*{olympicNumber1}"></span>
             </div>
             <div class="form-group">
                 <label for="olympicNumber2">Olympisch-nummer2:</label>
-                <input type="text" id="olympicNumber2" name="olympicNumber2" th:value="*{olympicNumber2}" required />
-                <div class="error" th:if="${#fields.hasErrors('olympicNumber2')}" th:errors="*{olympicNumber2}"></div>
+                <input type="text" id="olympicNumber2" name="olympicNumber2" th:field="*{olympicNumber2}" required />
+                <span class="error" th:if="${#fields.hasErrors('olympicNumber2')}" th:errors="*{olympicNumber2}"></span>
             </div>
             <div class="form-group">
                 <label for="disciplines">Disciplines:</label>
                 <select id="disciplines" name="disciplines" multiple th:field="*{disciplines}" size="3" onchange="limitSelection(this)">
                     <option th:each="discipline : ${disciplines}" th:value="${discipline}" th:text="${discipline}"></option>
                 </select>
-                <div class="error" th:if="${#fields.hasErrors('disciplines')}" th:errors="*{disciplines}"></div>
+                <span class="error" th:if="${#fields.hasErrors('disciplines')}" th:errors="*{disciplines}"></span>
             </div>
             <button type="submit">Wedstrijd Toevoegen</button>
         </form>

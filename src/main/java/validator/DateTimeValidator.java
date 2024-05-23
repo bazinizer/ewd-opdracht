@@ -1,27 +1,42 @@
 package validator;
 
 import jakarta.validation.ConstraintValidator;
+
 import jakarta.validation.ConstraintValidatorContext;
-import validation.DateTimeValidation;
+
 
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 
-public class DateTimeValidator implements ConstraintValidator<DateTimeValidation, LocalDateTime> {
+import org.springframework.validation.Errors;
+import org.springframework.validation.Validator;
 
-    private final LocalDateTime MIN_DATE = LocalDateTime.of(2024, 7, 26, 0, 0);
-    private final LocalDateTime MAX_DATE = LocalDateTime.of(2024, 8, 11, 23, 59);
-    private final LocalTime MIN_TIME = LocalTime.of(8, 0);
+import domain.Wedstrijd;
 
-    @Override
-    public void initialize(DateTimeValidation constraintAnnotation) {
-    }
+public class DateTimeValidator implements Validator{
 
-    @Override
-    public boolean isValid(LocalDateTime value, ConstraintValidatorContext context) {
-        if (value == null) {
-            return false;
-        }
-        return !value.isBefore(MIN_DATE) && !value.isAfter(MAX_DATE) && !value.toLocalTime().isBefore(MIN_TIME);
-    }
+
+	@Override
+	public boolean supports(Class<?> clazz) {
+		
+		return Wedstrijd.class.isAssignableFrom(clazz);
+	}
+
+	@Override
+	public void validate(Object target, Errors errors) {
+		
+	Wedstrijd wedstrijd = (Wedstrijd) target;
+	    LocalDateTime MIN_DATE = LocalDateTime.of(2024, 7, 26, 8, 0);
+	    LocalDateTime MAX_DATE = LocalDateTime.of(2024, 8, 11, 23, 59);
+	    
+	    LocalDateTime wedstrijdDatums = wedstrijd.getDatumTijd();
+	    
+	    if (wedstrijdDatums == null) {
+	    	return;
+	    }
+	    if (wedstrijdDatums.isBefore(MIN_DATE) || wedstrijdDatums.isAfter(MAX_DATE)) {
+	    	errors.rejectValue("datumTijd", "datum.range.invalid","foute tijd");
+	    }
+		
+	}
 }

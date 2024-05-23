@@ -20,15 +20,22 @@ import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import validation.DateTimeValidation;
-import validation.OlympicNumber1Validation;
-import validation.OlympicNumber2Validation;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import validator.DateTimeValidator;
+import validator.OlympicNumber1Validator;
+import validator.OlympicNumber2Validator;
+
+
 
 @Entity
 @Data
 @Builder
 @AllArgsConstructor
-//@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Getter
+@Setter
+@NoArgsConstructor
 @Table(name = "wedstrijd")
 public class Wedstrijd implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -47,12 +54,11 @@ public class Wedstrijd implements Serializable {
     private Set<String> disciplines;
 
     @NotNull(message = "{datum.required}")
-    @DateTimeValidation
     @Column(name = "datum_tijd")
     private LocalDateTime datumTijd;
 
-    @DecimalMin(value = "0.01", message = "{prijsPerTicket.range.invalid}")
-    @DecimalMax(value = "149.99", message = "{prijsPerTicket.range.invalid}")
+    @DecimalMin(value = "0.01", message = "{prijsPerTicket.min.invalid}")
+    @DecimalMax(value = "149.99", message = "{prijsPerTicket.max.invalid}")
     private double prijsPerTicket;
 
     @Min(value = 1, message = "{vrijePlaatsen.range.invalid}")
@@ -60,10 +66,8 @@ public class Wedstrijd implements Serializable {
     private int vrijePlaatsen;
 
     @Column(unique = true)
-    @OlympicNumber1Validation
     private int olympicNumber1;
 
-    @OlympicNumber2Validation
     private int olympicNumber2;
 
     public Wedstrijd(Sport sport, Stadium stadium, LocalDateTime datumTijd, int vrijePlaatsen, double prijsPerTicket, Set<String> disciplines, int nummer1, int nummer2) {
@@ -77,8 +81,7 @@ public class Wedstrijd implements Serializable {
         this.olympicNumber2 = nummer2;
     }
 
-    public Wedstrijd() {
-    }
+
 
     @Override
     public String toString() {
