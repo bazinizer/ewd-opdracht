@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import domain.Sport;
 import domain.Wedstrijd;
+import jakarta.validation.Valid;
 import service.SportService;
 import service.StadiumService;
 import service.WedstrijdService;
@@ -42,14 +43,20 @@ public class CreateWedstrijdController {
     }
 
     @PostMapping("/{sportId}/create")
-    public String createWedstrijd(@PathVariable Long sportId, @ModelAttribute Wedstrijd wedstrijd, BindingResult result, Model model) {
+    public String createWedstrijd(@PathVariable Long sportId, @Valid Wedstrijd wedstrijd, BindingResult result, Model model) {
+    	
         wedstrijdValidator.validate(wedstrijd, result);
         if (result.hasErrors()) {
             model.addAttribute("stadiums", stadiumService.findAll());
+            model.addAttribute("sport", sportService.findById(sportId));
+            model.addAttribute("disciplines", wedstrijdService.findDisciplinesBySportId(sportId));
+            model.addAttribute("wedstrijd", wedstrijd);
             return "create-wedstrijd";
         }
         wedstrijd.setSport(sportService.findById(sportId));
         wedstrijdService.save(wedstrijd);
-        return "redirect:/wedstrijden/" + sportId;
+//        System.out.println(wedstrijd);
+        return "redirect:/sport";
     }
+
 }

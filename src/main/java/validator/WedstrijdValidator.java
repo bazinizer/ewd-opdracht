@@ -1,77 +1,55 @@
 package validator;
 
 import domain.Wedstrijd;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
-import repository.StadiumRepository;
-import repository.WedstrijdRepository;
-import java.time.LocalDateTime;
+import service.StadiumService;
+import service.WedstrijdService;
 
+@Component
 public class WedstrijdValidator implements Validator {
 
-    private StadiumRepository stadiumRepository;
-    private WedstrijdRepository wedstrijdRepository;
+    @Autowired
+    private WedstrijdService wedstrijdService;
 
-    public WedstrijdValidator(StadiumRepository stadiumRepository, WedstrijdRepository wedstrijdRepository) {
-        this.stadiumRepository = stadiumRepository;
-        this.wedstrijdRepository = wedstrijdRepository;
-    }
+    @Autowired
+    private StadiumService stadiumService;
 
-    public WedstrijdValidator() {
-	}
-
-	@Override
+    @Override
     public boolean supports(Class<?> clazz) {
-        return Wedstrijd.class.isAssignableFrom(clazz);
+        return Wedstrijd.class.equals(clazz);
     }
 
     @Override
     public void validate(Object target, Errors errors) {
         Wedstrijd wedstrijd = (Wedstrijd) target;
 
-        // Datum validatie
-        if (wedstrijd.getDatumTijd() == null) {
-            errors.rejectValue("datumTijd", "wedstrijd.datum.required");
-        } else {
-            if (wedstrijd.getDatumTijd().isBefore(LocalDateTime.of(2024, 7, 26, 8, 0)) ||
-                wedstrijd.getDatumTijd().isAfter(LocalDateTime.of(2024, 8, 11, 23, 59))) {
-                errors.rejectValue("datumTijd", "wedstrijd.datum.range.invalid");
-            }
+        // Validate disciplines
+        if (wedstrijd.getDisciplines() != null && wedstrijd.getDisciplines().size() > 2) {
+            errors.rejectValue("disciplines", "disciplines.max.exceeded");
+        }
+        if (wedstrijd.getDisciplines() != null && wedstrijd.getDisciplines().stream().distinct().count() != wedstrijd.getDisciplines().size()) {
+            errors.rejectValue("disciplines", "disciplines.duplicate");
         }
 
-//        // Stadium naam validatie
-//        if (wedstrijd.getStadium() != null && !stadiumRepository.existsById(wedstrijd.getStadium().getId())) {
-//            errors.rejectValue("stadium", "wedstrijd.stadium.invalid");
+//        // Validate stadium existence
+//        if (wedstrijd.getStadium() == null || !stadiumService.existsById(wedstrijd.getStadium().getId())) {
+//            errors.rejectValue("stadium", "stadium.notfound");
 //        }
 
-        // Olympisch nummer validatie
-//        validateOlympicNumber(wedstrijd.getOlympischNummer1(), "olympicNumber1", errors);
-//        if (wedstrijd.getOlympicNumber2() != null) {
-//            if (Math.abs(wedstrijd.getOlympischNummer1() - wedstrijd.getOlympicNumber2()) > 1000) {
-//                errors.rejectValue("olympicNumber2", "wedstrijd.olympicNumber2.range.invalid");
-//            }
-//        }
-
-        // Ticketprijs validatie
-        if (wedstrijd.getPrijsPerTicket() <= 0 || wedstrijd.getPrijsPerTicket() >= 150) {
-            errors.rejectValue("prijsPerTicket", "wedstrijd.prijsPerTicket.range.invalid");
+        // Validate olympicNumber1 uniqueness
+        if (wedstrijdService.existsByOlympicNumber1(wedstrijd.getOlympicNumber1())) {
+            errors.rejectValue("olympicNumber1", "olympicNumber.duplicate");
         }
 
-        // Aantal plaatsen validatie
-        if (wedstrijd.getVrijePlaatsen() <= 0 || wedstrijd.getVrijePlaatsen() >= 50) {
-            errors.rejectValue("vrijePlaatsen", "wedstrijd.vrijePlaatsen.range.invalid");
-        }
-    }
-
-    private void validateOlympicNumber(int number, String field, Errors errors) {
-        if (number < 10000 || number > 99999) {
-            errors.rejectValue(field, "wedstrijd.olympicNumber.format.invalid");
-        } else if (Integer.toString(number).startsWith("0")) {
-            errors.rejectValue(field, "wedstrijd.olympicNumber.start.invalid");
-        } else if (Integer.toString(number).charAt(0) == Integer.toString(number).charAt(4)) {
-            errors.rejectValue(field, "wedstrijd.olympicNumber.digits.different.invalid");
-        } else if (wedstrijdRepository.existsByOlympicNumber1(number)) {
-            errors.rejectValue(field, "wedstrijd.olympicNumber.duplicate");
+        // Validate olympicNumber2 range
+        int olympicNumber1 = wedstrijd.getOlympicNumber1();
+        int olympicNumber2 = wedstrijd.getOlympicNumber2();
+        if (Math.abs(olympicNumber1 - olympicNumber2) > 1000) {
+            errors.rejectValue("olympicNumber2", "olympicNumber2.range.invalid");
         }
     }
 }
+

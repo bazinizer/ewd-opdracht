@@ -38,12 +38,12 @@ public class Stadium implements Serializable {
     private Long id;
 
     private String naam;
-    private int capaciteit;
+
 
 //    public Stadium() {}
 
-    public Stadium(String naam, int capaciteit) {
+    public Stadium(String naam) {
         this.naam = naam;
-        this.capaciteit = capaciteit;
+
     }
 }

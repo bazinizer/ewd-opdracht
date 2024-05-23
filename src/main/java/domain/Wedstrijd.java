@@ -16,11 +16,13 @@ import jakarta.validation.constraints.DecimalMax;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import validation.OlympischNummerValidation;
-import validation.WedstrijdDatum;
+import validation.DateTimeValidation;
+import validation.OlympicNumber1Validation;
+import validation.OlympicNumber2Validation;
 
 @Entity
 @Data
@@ -44,23 +46,25 @@ public class Wedstrijd implements Serializable {
     @ElementCollection
     private Set<String> disciplines;
 
-
-    @WedstrijdDatum
+    @NotNull(message = "{datum.required}")
+    @DateTimeValidation
+    @Column(name = "datum_tijd")
     private LocalDateTime datumTijd;
 
-    @Min(0) @Max(50)
-    private int vrijePlaatsen;
-
-    @DecimalMin("0.01") @DecimalMax("149.99")
+    @DecimalMin(value = "0.01", message = "{prijsPerTicket.range.invalid}")
+    @DecimalMax(value = "149.99", message = "{prijsPerTicket.range.invalid}")
     private double prijsPerTicket;
 
-    @OlympischNummerValidation
+    @Min(value = 1, message = "{vrijePlaatsen.range.invalid}")
+    @Max(value = 50, message = "{vrijePlaatsen.range.invalid}")
+    private int vrijePlaatsen;
+
     @Column(unique = true)
-    private int olympicNumber1; 
+    @OlympicNumber1Validation
+    private int olympicNumber1;
 
-    private int olympicNumber2; 
-
-
+    @OlympicNumber2Validation
+    private int olympicNumber2;
 
     public Wedstrijd(Sport sport, Stadium stadium, LocalDateTime datumTijd, int vrijePlaatsen, double prijsPerTicket, Set<String> disciplines, int nummer1, int nummer2) {
         this.sport = sport;
@@ -72,7 +76,22 @@ public class Wedstrijd implements Serializable {
         this.olympicNumber1 = nummer1;
         this.olympicNumber2 = nummer2;
     }
-    public Wedstrijd(){
-    	
+
+    public Wedstrijd() {
+    }
+
+    @Override
+    public String toString() {
+        return "Wedstrijd{" +
+                "id=" + id +
+                ", sport=" + (sport != null ? sport.getNaam() : "null") +
+                ", stadium=" + (stadium != null ? stadium.getNaam() : "null") +
+                ", disciplines=" + disciplines +
+                ", datumTijd=" + datumTijd +
+                ", prijsPerTicket=" + prijsPerTicket +
+                ", vrijePlaatsen=" + vrijePlaatsen +
+                ", olympicNumber1=" + olympicNumber1 +
+                ", olympicNumber2=" + olympicNumber2 +
+                '}';
     }
 }

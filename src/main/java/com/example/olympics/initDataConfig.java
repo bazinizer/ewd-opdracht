@@ -74,8 +74,8 @@ public class initDataConfig implements CommandLineRunner {
         sportRepository.saveAll(sports);
 
         List<Stadium> stadiums = new ArrayList<>(Arrays.asList(
-            new Stadium("Olympisch Stadion", 50000),
-            new Stadium("Aquatics Center", 15000)
+            new Stadium("Olympisch Stadion"),
+            new Stadium("Aquatics Center")
         ));
         stadiumService.saveAll(stadiums);
 
@@ -85,15 +85,13 @@ public class initDataConfig implements CommandLineRunner {
         Stadium stadion = stadiums.get(0);
 
         // Creëer wedstrijden voor Atletiek
-        wedstrijdService.save(new Wedstrijd(atletiek, stadion, LocalDateTime.now().plusDays(1), 50, 20.0, atletiek.getDisciplines(), generateOlympicNumber(), generateOlympicNumber()));
+        wedstrijdService.save(new Wedstrijd(atletiek, stadion, LocalDateTime.of(2024, 7, 27, 9, 0), 50, 20.0, atletiek.getDisciplines(), 22368, 22697));
 
         // Creëer wedstrijden voor Zwemmen
-        wedstrijdService.save(new Wedstrijd(zwemmen, stadion, LocalDateTime.now().plusDays(2), 30, 25.0, zwemmen.getDisciplines(), generateOlympicNumber(), generateOlympicNumber()));
+        wedstrijdService.save(new Wedstrijd(zwemmen, stadion, LocalDateTime.of(2024, 7, 30, 10, 0), 30, 25.0, zwemmen.getDisciplines(), 42368, 42697));
         
         // Meer wedstrijden kunnen op soortgelijke wijze worden toegevoegd
     }
 
-    private int generateOlympicNumber() {
-        return new Random().nextInt(90000) + 10000; // Zorgt voor een nummer tussen 10000 en 99999
-    }
+
 }
