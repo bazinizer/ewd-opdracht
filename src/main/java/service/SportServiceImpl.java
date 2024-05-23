@@ -38,4 +38,5 @@ public class SportServiceImpl implements SportService{
         return sportRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid sport Id:" + id));
     }
 
+
 }

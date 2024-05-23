@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Set;
 
+import org.hibernate.validator.constraints.Range;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
@@ -61,8 +63,7 @@ public class Wedstrijd implements Serializable {
     @DecimalMax(value = "149.99", message = "{prijsPerTicket.max.invalid}")
     private double prijsPerTicket;
 
-    @Min(value = 1, message = "{vrijePlaatsen.range.invalid}")
-    @Max(value = 50, message = "{vrijePlaatsen.range.invalid}")
+    @Range(min=0,max=50, message="{vrijePlaatsen.range.invalid}")
     private int vrijePlaatsen;
 
     @Column(unique = true)

@@ -5,7 +5,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import domain.Sport;
 import domain.Wedstrijd;
-
+import jakarta.validation.Valid;
 import service.SportService;
 import service.StadiumService;
 import service.WedstrijdService;
@@ -52,7 +51,7 @@ public class CreateWedstrijdController {
     }
 
     @PostMapping("/{sportId}/create")
-    public String createWedstrijd(@Validated Wedstrijd wedstrijd, BindingResult result, Model model,@PathVariable Long sportId, Authentication authentication) {
+    public String createWedstrijd(@Valid Wedstrijd wedstrijd, BindingResult result, Model model,@PathVariable Long sportId, Authentication authentication) {
         dateTimeValidator.validate(wedstrijd, result);
         olympicNumber1Validator.validate(wedstrijd, result);
         olympicNumber2Validator.validate(wedstrijd, result);

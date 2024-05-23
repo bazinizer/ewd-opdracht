@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <title>Koop Tickets</title>
-    <link rel="stylesheet" th:href="@{/css/style.css}" />
+    <link rel="stylesheet" th:href="@{/css/ticketStyle.css}" />
+     </style>
     <script>
         function updateTotalPrice() {
             var pricePerTicket = parseFloat(document.getElementById('pricePerTicket').getAttribute('value'));
@@ -14,31 +15,40 @@
     </script>
 </head>
 <body>
-<h1 th:text="'Koop tickets voor ' + ${wedstrijd.sport.naam} + ' op ' + ${formattedDate}"></h1>
+    <div class="container">
+        <h1 th:text="'Koop tickets voor ' + ${wedstrijd.sport.naam} + ' op ' + ${formattedDate}">Koop Tickets</h1>
 
-    <!-- Error Message Display -->
-    <div th:if="${error != null}" th:text="${error}" class="error-messages"></div>
+        <!-- Error Message Display -->
+        <div th:if="${#fields.hasErrors('ticket')}" class="error-messages">
+            <ul>
+                <li th:each="err : ${#fields.errors('ticket')}" th:text="${err}">Error message</li>
+            </ul>
+        </div>
 
+        <div class="ticket-info">
+            <span id="pricePerTicket" th:attr="value=${wedstrijd.prijsPerTicket}">
+                Prijs per ticket: €<span th:text="${wedstrijd.prijsPerTicket}"></span>
+            </span>
+        </div>
 
-    <div class="ticket-info">
-        <span id="pricePerTicket" th:attr="value=${wedstrijd.prijsPerTicket}">
-            Prijs per ticket: €<span th:text="${wedstrijd.prijsPerTicket}"></span>
-        </span>
-        <form th:action="@{'/wedstrijden/' + ${wedstrijd.id} + '/koopTicket'}" method="post">
-            <input type="number" id="quantity" name="aantal" min="1" max="20" value="1" required oninput="updateTotalPrice()" />
+        <form th:action="@{'/wedstrijden/' + ${wedstrijd.id} + '/koopTicket'}" th:object="${ticket}" method="post" class="ticket-form">
+            <div class="form-group">
+                <label for="quantity">Aantal tickets:</label>
+                <input type="number" id="quantity" name="aantal" min="1" max="20" value="1" required oninput="updateTotalPrice()" th:field="*{aantal}" />
+                <span class="error" th:if="${#fields.hasErrors('aantal')}" th:errors="*{aantal}"></span>
+            </div>
             <button type="submit">Koop Tickets</button>
         </form>
-        <div>
-            Totaalprijs: <span id="totalPrice" th:text="'€' + ${wedstrijd.prijsPerTicket}"></span>
+
+        <div class="total-price">
+            Totaalprijs: <span id="totalPrice" th:text="'€' + ${wedstrijd.prijsPerTicket}">€0.00</span>
         </div>
-    </div>
 
-
-                    <div class="mt-8">
+        <div class="logout-button">
             <form th:action="@{/logout}" method="post">
-                <button type="submit" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">Uitloggen</button>
+                <button type="submit">Uitloggen</button>
             </form>
         </div>
+    </div>
 </body>
-
 </html>

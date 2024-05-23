@@ -2,13 +2,17 @@ package validator;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.validation.Errors;
+import org.springframework.validation.Validator;
 
+import domain.Ticket;
 import domain.Wedstrijd;
 import service.TicketService;
 import service.WedstrijdService;
 
 @Component
-public class TicketPurchaseValidator {
+public class TicketPurchaseValidator implements Validator {
+
 
     @Autowired
     private TicketService ticketService;
@@ -24,31 +28,49 @@ public class TicketPurchaseValidator {
      * @param aantal The number of tickets to purchase.
      * @return A string containing an error message if validation fails, or null if validation passes.
      */
-    public String validateTicketPurchase(Long userId, Long wedstrijdId, int aantal) {
-        if (aantal <= 0) {
-            return "Het aantal te kopen tickets moet groter zijn dan 0.";
-        }
-
-        int ticketsAlreadyBoughtForThisWedstrijd = ticketService.getTotalTicketsBoughtForWedstrijdByUser(wedstrijdId, userId);
-        System.out.println(ticketsAlreadyBoughtForThisWedstrijd);
-        if (ticketsAlreadyBoughtForThisWedstrijd + aantal > 20) {
-            return "Je kunt niet meer dan 20 tickets voor deze specifieke wedstrijd kopen.";
-        }
-
-        int totalTicketsBought = ticketService.getTotalTicketsBoughtByUser(userId);
-        if (totalTicketsBought + aantal > 100) {
-            return "Je kunt in totaal niet meer dan 100 tickets kopen voor alle wedstrijden.";
-        }
-
-        Wedstrijd wedstrijd = wedstrijdService.findById(wedstrijdId);
-        if (wedstrijd == null) {
-            return "De geselecteerde wedstrijd bestaat niet.";
+    
+	@Override
+	public boolean supports(Class<?> clazz) {
+		return Ticket.class.equals(clazz);
+	}
+	@Override
+	public void validate(Object target, Errors errors) {
+		Ticket request = (Ticket) target;
+		
+	
+	
+//    public String validateTicketPurchase(Long userId, Long wedstrijdId, int aantal) {
+        if (request.getAantal() <= 0) {
+            errors.rejectValue("aantal", "aantal.negative", "Het aantal te kopen tickets moet groter zijn dan 0.");
         }
         
-        if (aantal > wedstrijd.getVrijePlaatsen()) {
-            return "Er zijn niet genoeg vrije plaatsen beschikbaar voor deze aankoop.";
+        
+        int ticketsAlreadyBoughtForThisWedstrijd = ticketService.getTotalTicketsBoughtForWedstrijdByUser(request.getWedstrijd().getId(), request.getUser().getId());
+
+        if (ticketsAlreadyBoughtForThisWedstrijd + request.getAantal() > 20) {
+            errors.rejectValue("aantal", "aantal.limit.exceeded", "Je kunt niet meer dan 20 tickets voor deze specifieke wedstrijd kopen.");
+        }
+        
+        
+
+        int totalTicketsBought = ticketService.getTotalTicketsBoughtByUser(request.getUser().getId());
+        if (totalTicketsBought + request.getAantal() > 100) {
+            errors.rejectValue("aantal", "aantal.total.limit.exceeded", "Je kunt in totaal niet meer dan 100 tickets kopen voor alle wedstrijden.");
         }
 
-        return null; // No errors, validation passed
+
+        Wedstrijd wedstrijd = wedstrijdService.findById(request.getWedstrijd().getId());
+
+
+        if (request.getAantal() > wedstrijd.getVrijePlaatsen()) {
+            errors.rejectValue("aantal", "aantal.not.enough", "Er zijn niet genoeg vrije plaatsen beschikbaar voor deze aankoop.");
+            return;
+        }
+
+
     }
+
+
+
+
 }
