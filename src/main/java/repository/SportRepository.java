@@ -10,4 +10,6 @@ public interface SportRepository extends CrudRepository<Sport, Long>{
 	Sport findByNaam(String naam);
 	
 
+	
+
 }

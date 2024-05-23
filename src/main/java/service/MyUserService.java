@@ -42,6 +42,11 @@ public class MyUserService implements UserDetailsService{
 	        return myUserRepository.findUserIdByUsername(username)
 	                .orElseThrow(() -> new UsernameNotFoundException("User not found with username: " + username));
 	    }
+	    
+	    public MyUser findByUsername(String name) {
+			return myUserRepository.findByUsername(name);
+	    	
+	    }
 	     
 	}
 
