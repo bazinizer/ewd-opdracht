@@ -1,6 +1,8 @@
 package com.example.olympics;
 
 import org.springframework.boot.SpringApplication;
+
+
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.Bean;
@@ -17,7 +19,12 @@ import service.TicketService;
 import service.TicketServiceImpl;
 import service.WedstrijdService;
 import service.WedstrijdServiceImpl;
-import validator.WedstrijdValidator;
+import validator.DateTimeValidator;
+import validator.OlympicNumber1Validator;
+import validator.OlympicNumber2Validator;
+import validator.TicketPurchaseValidator;
+
+
 
 @SpringBootApplication
 @EnableJpaRepositories("repository")
@@ -57,9 +64,23 @@ public class OlympicsApplication implements WebMvcConfigurer {
     	return new TicketServiceImpl();
     }
     
+
     @Bean
-    public WedstrijdValidator wedstrijdValidator() {
-    	return new WedstrijdValidator();
+    public DateTimeValidator dateTimeValidation() {
+    	return new DateTimeValidator();
+    }
+    @Bean
+    public OlympicNumber1Validator olympicNumber1Validator() {
+    	return new OlympicNumber1Validator();
+    }
+    @Bean
+    public OlympicNumber2Validator olympicNumber2Validator() {
+    	return new OlympicNumber2Validator();
+    }
+    
+    @Bean
+    public TicketPurchaseValidator purchaseValidator() {
+    	return new TicketPurchaseValidator();
     }
     
 }

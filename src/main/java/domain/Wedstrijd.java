@@ -16,17 +16,26 @@ import jakarta.validation.constraints.DecimalMax;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import validation.OlympischNummerValidation;
-import validation.WedstrijdDatum;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import validator.DateTimeValidator;
+import validator.OlympicNumber1Validator;
+import validator.OlympicNumber2Validator;
+
+
 
 @Entity
 @Data
 @Builder
 @AllArgsConstructor
-//@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Getter
+@Setter
+@NoArgsConstructor
 @Table(name = "wedstrijd")
 public class Wedstrijd implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -44,23 +53,22 @@ public class Wedstrijd implements Serializable {
     @ElementCollection
     private Set<String> disciplines;
 
-
-    @WedstrijdDatum
+    @NotNull(message = "{datum.required}")
+    @Column(name = "datum_tijd")
     private LocalDateTime datumTijd;
 
-    @Min(0) @Max(50)
-    private int vrijePlaatsen;
-
-    @DecimalMin("0.01") @DecimalMax("149.99")
+    @DecimalMin(value = "0.01", message = "{prijsPerTicket.min.invalid}")
+    @DecimalMax(value = "149.99", message = "{prijsPerTicket.max.invalid}")
     private double prijsPerTicket;
 
-    @OlympischNummerValidation
+    @Min(value = 1, message = "{vrijePlaatsen.range.invalid}")
+    @Max(value = 50, message = "{vrijePlaatsen.range.invalid}")
+    private int vrijePlaatsen;
+
     @Column(unique = true)
-    private int olympicNumber1; 
+    private int olympicNumber1;
 
-    private int olympicNumber2; 
-
-
+    private int olympicNumber2;
 
     public Wedstrijd(Sport sport, Stadium stadium, LocalDateTime datumTijd, int vrijePlaatsen, double prijsPerTicket, Set<String> disciplines, int nummer1, int nummer2) {
         this.sport = sport;
@@ -72,7 +80,21 @@ public class Wedstrijd implements Serializable {
         this.olympicNumber1 = nummer1;
         this.olympicNumber2 = nummer2;
     }
-    public Wedstrijd(){
-    	
+
+
+
+    @Override
+    public String toString() {
+        return "Wedstrijd{" +
+                "id=" + id +
+                ", sport=" + (sport != null ? sport.getNaam() : "null") +
+                ", stadium=" + (stadium != null ? stadium.getNaam() : "null") +
+                ", disciplines=" + disciplines +
+                ", datumTijd=" + datumTijd +
+                ", prijsPerTicket=" + prijsPerTicket +
+                ", vrijePlaatsen=" + vrijePlaatsen +
+                ", olympicNumber1=" + olympicNumber1 +
+                ", olympicNumber2=" + olympicNumber2 +
+                '}';
     }
 }

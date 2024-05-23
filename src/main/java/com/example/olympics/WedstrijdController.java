@@ -1,6 +1,7 @@
 package com.example.olympics;
 
 import org.eclipse.persistence.internal.oxm.schema.model.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -18,7 +19,7 @@ import service.SportService;
 import service.StadiumService;
 import service.TicketService;
 import service.WedstrijdService;
-import validator.WedstrijdValidator;
+
 
 @Controller
 @RequestMapping("/wedstrijden")
@@ -31,8 +32,7 @@ public class WedstrijdController {
     private TicketService ticketService;
     @Autowired
     private StadiumService stadiumService;
-    @Autowired
-    private WedstrijdValidator wedstrijdValidator;
+
     @Autowired
     private SportService sportService;
     
@@ -49,7 +49,7 @@ public class WedstrijdController {
         String username = auth.getName();
 
         model.addAttribute("wedstrijden", wedstrijdService.findBySportId(sportId));
-        model.addAttribute("sport", sportService.findById(sportId)); // Voeg toe om de sportnaam te tonen
+        model.addAttribute("sport", sportService.findById(sportId)); 
         model.addAttribute("isAdmin", auth.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN")));
 
         return "wedstrijden-detail";

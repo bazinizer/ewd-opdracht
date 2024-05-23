@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Koop Tickets</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}" />
+    <script>
+        function updateTotalPrice() {
+            var pricePerTicket = parseFloat(document.getElementById('pricePerTicket').getAttribute('value'));
+            var quantity = parseInt(document.getElementById('quantity').value);
+            var totalPrice = pricePerTicket * quantity;
+            document.getElementById('totalPrice').textContent = '€' + totalPrice.toFixed(2);
+        }
+    </script>
+</head>
+<body>
+<h1 th:text="'Koop tickets voor ' + ${wedstrijd.sport.naam} + ' op ' + ${formattedDate}"></h1>
+
+    <!-- Error Message Display -->
+    <div th:if="${error != null}" th:text="${error}" class="error-messages"></div>
+
+
+    <div class="ticket-info">
+        <span id="pricePerTicket" th:attr="value=${wedstrijd.prijsPerTicket}">
+            Prijs per ticket: €<span th:text="${wedstrijd.prijsPerTicket}"></span>
+        </span>
+        <form th:action="@{'/wedstrijden/' + ${wedstrijd.id} + '/koopTicket'}" method="post">
+            <input type="number" id="quantity" name="aantal" min="1" max="20" value="1" required oninput="updateTotalPrice()" />
+            <button type="submit">Koop Tickets</button>
+        </form>
+        <div>
+            Totaalprijs: <span id="totalPrice" th:text="'€' + ${wedstrijd.prijsPerTicket}"></span>
+        </div>
+    </div>
+
+
+                    <div class="mt-8">
+            <form th:action="@{/logout}" method="post">
+                <button type="submit" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">Uitloggen</button>
+            </form>
+        </div>
+</body>
+
+</html>

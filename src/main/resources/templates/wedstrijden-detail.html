@@ -9,21 +9,28 @@
 <body class="bg-gray-100">
     <header class="text-xl font-bold text-center py-4 bg-blue-500 text-white">Wedstrijd Detail</header>
     
-    <div class="container mx-auto px-4 py-2">
+    <div class="container mx-auto px-4">
         <h1 class="text-2xl font-bold" th:text="${sport.naam} + ' - Overzicht'">Sportnaam - Overzicht</h1>
         <h2 class="text-lg mt-4 mb-2" th:text="'Wedstrijden voor ' + ${sport.naam}">Wedstrijden voor Sport</h2>
 
-        <div th:each="wedstrijd : ${wedstrijden}">
-            <div class="flex flex-wrap justify-start items-center">
-                <ul class="w-full">
-                    <li class="flex justify-between items-center bg-white rounded shadow px-4 py-2 my-2">
-                        <span class="font-medium" th:text="${wedstrijd.sport.naam}">Sportnaam</span>
-                        <span th:text="${wedstrijd.stadium.naam}">Stadium</span>
-                        <span th:text="'Open plaatsen: ' + ${wedstrijd.vrijePlaatsen}">Open plaatsen</span>
-                        <span th:if="${isAdmin or wedstrijd.vrijePlaatsen > 0}" th:text="${wedstrijd.prijsPerTicket} + ' EUR'">Prijs per Ticket</span>
-                        <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onclick="location.href='/koopTicket.html'">Koop ticket</button>
-                    </li>
-                </ul>
+        <div th:each="wedstrijd : ${wedstrijden}" class="mb-4">
+            <div class="w-full bg-white rounded overflow-hidden shadow-lg">
+                <div class="px-6 py-4 flex justify-between items-center">
+                    <div>
+                        <div class="font-bold text-xl mb-2" th:text="${wedstrijd.sport.naam} + ' - ' + ${#temporals.format(wedstrijd.datumTijd, 'dd-MM-yyyy HH:mm')}"></div>
+                        <p th:text="'Stadion: ' + ${wedstrijd.stadium.naam}"></p>
+                        <p th:text="'Beschikbare plaatsen: ' + ${wedstrijd.vrijePlaatsen}"></p>
+                        <p th:if="${isAdmin or wedstrijd.vrijePlaatsen > 0}" th:text="'Prijs per ticket: ' + ${wedstrijd.prijsPerTicket} + ' EUR'"></p>
+                        <div th:each="discipline : ${wedstrijd.disciplines}" th:text="'Discipline: ' + ${discipline}"></div>
+                    </div>
+
+                    <div>
+                        <div th:if="${wedstrijd.vrijePlaatsen > 0}">
+                            <a th:href="@{'/wedstrijden/' + ${wedstrijd.id} + '/koopTicket'}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Koop ticket</a>
+                        </div>
+                        <p th:if="${wedstrijd.vrijePlaatsen == 0}" class="text-red-500">Uitverkocht</p>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -31,7 +38,14 @@
         <div th:if="${isAdmin}">
             <a th:href="@{'/wedstrijden/' + ${sport.id} + '/create'}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Create Wedstrijd</a>
         </div>
-
     </div>
+    
 </body>
+        </div>
+                <div class="mt-8">
+            <form th:action="@{/logout}" method="post">
+                <button type="submit" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">Uitloggen</button>
+            </form>
+        </div>
+
 </html>

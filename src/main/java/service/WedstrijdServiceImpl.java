@@ -1,6 +1,8 @@
 package service;
 
+import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -56,12 +58,22 @@ public class WedstrijdServiceImpl implements WedstrijdService {
 
     @Override 
     public List<Wedstrijd> findBySportId(Long sportId){
-		return wedstrijdRepository.findBySportId(sportId);
-    	
+        List<Wedstrijd> wedstrijden = wedstrijdRepository.findBySportId(sportId);
+        return wedstrijden.stream()
+                          .sorted(Comparator.comparing(Wedstrijd::getDatumTijd))
+                          .collect(Collectors.toList());
     }
+
     
     @Override
     public boolean existsByOlympicNumber1(int olympicNumber1) {
         return wedstrijdRepository.existsByOlympicNumber1(olympicNumber1);
     }
+
+	@Override
+	public Wedstrijd findById(Long wedstrijdId) {
+		return wedstrijdRepository.findById(wedstrijdId).orElse(null);
+	}
+
+
 }
