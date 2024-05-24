@@ -15,4 +15,5 @@ public interface WedstrijdRepository extends CrudRepository<Wedstrijd, Long> {
 	List<Wedstrijd> findBySportId(Long sportId);
 
 
+
 }

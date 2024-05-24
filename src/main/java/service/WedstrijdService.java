@@ -15,4 +15,5 @@ public interface WedstrijdService {
 	boolean existsByOlympicNumber1(int olympicNumber1);
 	Set<String> findDisciplinesBySportId(Long sportId);
 	Wedstrijd findById(Long wedstrijdId);
+	int vrijePlaatsenVoorWedstrijd(Long wedstrijdId);
 }

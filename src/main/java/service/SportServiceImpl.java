@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import domain.Sport;
+import exceptions.SportNotFoundException;
 import repository.SportRepository;
 
 @Service
@@ -35,7 +36,7 @@ public class SportServiceImpl implements SportService{
 
     @Override
     public Sport findById(Long id) {
-        return sportRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid sport Id:" + id));
+        return sportRepository.findById(id).orElseThrow(() -> new SportNotFoundException(id));
     }
 
 

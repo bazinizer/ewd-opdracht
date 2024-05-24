@@ -90,6 +90,11 @@
 			<artifactId>Spring_Boot_Validation</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
+		<dependency>
+			<groupId>com.springBoot</groupId>
+			<artifactId>Spring_Boot_rest_example1</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
 	</dependencies>
 
 	<build>

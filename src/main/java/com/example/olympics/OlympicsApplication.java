@@ -3,6 +3,7 @@ package com.example.olympics;
 import org.springframework.boot.SpringApplication;
 
 
+
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.Bean;
@@ -10,6 +11,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+import perform.PerformRestExample;
 import service.MyUserService;
 import service.SportService;
 import service.SportServiceImpl;
@@ -33,6 +35,14 @@ public class OlympicsApplication implements WebMvcConfigurer {
 
     public static void main(String[] args) {
         SpringApplication.run(OlympicsApplication.class, args);
+        
+        try {
+        	new PerformRestExample();
+        	System.out.println("HAAAALLLLOOO");
+        	
+        }catch(Exception e) {
+        	e.printStackTrace();
+        }
     }
 
     @Override
@@ -81,6 +91,11 @@ public class OlympicsApplication implements WebMvcConfigurer {
     @Bean
     public TicketPurchaseValidator purchaseValidator() {
     	return new TicketPurchaseValidator();
+    }
+    
+    @Bean
+    public WedstrijdRestController wedstrijdRestController() {
+    	return new WedstrijdRestController();
     }
     
 }

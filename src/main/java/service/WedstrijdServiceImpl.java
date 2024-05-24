@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import domain.Wedstrijd;
+import exceptions.SportNotFoundException;
+import exceptions.WedstrijdNotFoundException;
 import repository.TicketRepository;
 import repository.WedstrijdRepository;
 
@@ -59,6 +61,9 @@ public class WedstrijdServiceImpl implements WedstrijdService {
     @Override 
     public List<Wedstrijd> findBySportId(Long sportId){
         List<Wedstrijd> wedstrijden = wedstrijdRepository.findBySportId(sportId);
+        if (wedstrijden.isEmpty()) {
+            throw new SportNotFoundException(sportId);
+        }
         return wedstrijden.stream()
                           .sorted(Comparator.comparing(Wedstrijd::getDatumTijd))
                           .collect(Collectors.toList());
@@ -72,8 +77,18 @@ public class WedstrijdServiceImpl implements WedstrijdService {
 
 	@Override
 	public Wedstrijd findById(Long wedstrijdId) {
-		return wedstrijdRepository.findById(wedstrijdId).orElse(null);
+		Wedstrijd wedstrijd = wedstrijdRepository.findById(wedstrijdId)
+                .orElseThrow(() -> new WedstrijdNotFoundException(wedstrijdId));
+		return wedstrijd;
+}
+	
+	@Override
+	public int vrijePlaatsenVoorWedstrijd(Long wedstrijdId) {
+        Wedstrijd wedstrijd = wedstrijdRepository.findById(wedstrijdId)
+                .orElseThrow(() -> new WedstrijdNotFoundException(wedstrijdId));
+        	return wedstrijd.getVrijePlaatsen();
+}
 	}
 
 
-}
+

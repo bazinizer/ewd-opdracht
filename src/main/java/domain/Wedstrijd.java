@@ -6,6 +6,10 @@ import java.util.Set;
 
 import org.hibernate.validator.constraints.Range;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
@@ -25,6 +29,8 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import utils.LocalDateTimeDeserializer;
+import utils.LocalDateTimeSerializer;
 import validator.DateTimeValidator;
 import validator.OlympicNumber1Validator;
 import validator.OlympicNumber2Validator;
@@ -47,6 +53,7 @@ public class Wedstrijd implements Serializable {
     private Long id;
 
     @ManyToOne
+    @JsonIgnore
     private Sport sport;
 
     @ManyToOne
@@ -57,6 +64,8 @@ public class Wedstrijd implements Serializable {
 
     @NotNull(message = "{datum.required}")
     @Column(name = "datum_tijd")
+    @JsonSerialize(using = LocalDateTimeSerializer.class)
+    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     private LocalDateTime datumTijd;
 
     @DecimalMin(value = "0.01", message = "{prijsPerTicket.min.invalid}")
