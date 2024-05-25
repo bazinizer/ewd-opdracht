@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import domain.MyUser;
 import domain.Ticket;
@@ -38,6 +39,7 @@ public class TicketPurchaseController {
 
     @Autowired
     private TicketPurchaseValidator purchaseValidator;
+    
     @Autowired
     private SportService sportService;
 
@@ -62,7 +64,7 @@ public class TicketPurchaseController {
     }
 
     @PostMapping("/{wedstrijdId}/koopTicket")
-    public String buyTickets(@PathVariable Long wedstrijdId, @Valid Ticket ticket, BindingResult result, Model model) {
+    public String buyTickets(@PathVariable Long wedstrijdId, @Valid Ticket ticket, BindingResult result, Model model,RedirectAttributes redirectAttributes) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String userName = authentication.getName();
         Long userId = myUserService.getUserIdByUsername(userName);
@@ -87,7 +89,9 @@ public class TicketPurchaseController {
 
         
         ticketService.purchaseTickets(userId, wedstrijdId, ticket.getAantal());
+        redirectAttributes.addFlashAttribute("successMessage", ticket.getAantal() + " tickets werden aangekocht");
 
-        return "redirect:/sport";
+
+        return "redirect:/wedstrijden/" + wedstrijd.getSport().getId();
     }
 }

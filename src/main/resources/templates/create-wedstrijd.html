@@ -15,7 +15,7 @@
                 </select>
             </form>
         </div>
-        <h1 th:text="'Nieuwe Wedstrijd Toevoegen voor ' + ${sport.naam}">Nieuwe Wedstrijd Toevoegen</h1>
+        <h1 th:text="${sport.naam}">Nieuwe Wedstrijd Toevoegen</h1>
         <form th:action="@{'/wedstrijden/' + ${sport.id} + '/create'}" th:object="${wedstrijd}" method="post">
             <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
             <div class="form-group">

@@ -25,7 +25,7 @@
         </div>
         <h1 th:text="#{button.buyTickets} + ' ' + ${wedstrijd.sport.naam} + ' on ' + ${formattedDate}">Koop Tickets</h1>
 
-        <!-- Error Message Display -->
+       
         <div th:if="${#fields.hasErrors('ticket')}" class="error-messages">
             <ul>
                 <li th:each="err : ${#fields.errors('ticket')}" th:text="${err}">Error message</li>

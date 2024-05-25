@@ -1,17 +1,21 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-<meta charset="ISO-8859-1">
-<title>Access is denied</title>
+    <meta charset="ISO-8859-1">
+    <title>Access is Denied</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@^2.0/dist/tailwind.min.css">
+    <link rel="stylesheet" th:href="@{/css/ticketStyle.css}" />
 </head>
-<body>
-	<h1>HTTP Status 403 - Access is denied</h1>
-
-	<!-- TODO -->
-		<form th:action="@{/logout}" method="post">
-		<input type="submit" value="Logout" /> 
-		<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
-	</form>
-	
+<body class="bg-gray-100 flex items-center justify-center min-h-screen">
+    <div class="bg-white p-8 rounded shadow-md text-center">
+        <h1 class="text-3xl font-bold text-red-500 mb-4">HTTP Status 403</h1>
+        <p class="text-xl text-gray-700 mb-6">Access is denied</p>
+        <form th:action="@{/logout}" method="post">
+            <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                Logout
+            </button>
+            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+        </form>
+    </div>
 </body>
 </html>

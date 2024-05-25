@@ -25,6 +25,7 @@ import validator.OlympicNumber2Validator;
 @RequestMapping("/wedstrijden")
 public class CreateWedstrijdController {
 
+	
     @Autowired
     private SportService sportService;
     @Autowired

@@ -44,7 +44,7 @@ public class OlympicsApplication implements WebMvcConfigurer {
         
         try {
         	new PerformRestExample();
-        	System.out.println("HAAAALLLLOOO");
+
         	
         }catch(Exception e) {
         	e.printStackTrace();

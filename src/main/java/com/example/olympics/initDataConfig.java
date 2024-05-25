@@ -80,19 +80,13 @@ public class initDataConfig implements CommandLineRunner {
         ));
         stadiumService.saveAll(stadiums);
 
-        // Voorbeeld voor Atletiek en Zwemmen
-        Sport atletiek = sports.get(0);
-        Sport zwemmen = sports.get(1);
-        Stadium stadion = stadiums.get(0);
+        for (Sport sport : sports) {
+            Stadium stadion = stadiums.get(0); 
+            LocalDateTime datumTijd1 = LocalDateTime.of(2024, 7, new Random().nextInt(10) + 20, 9, 0);
+            LocalDateTime datumTijd2 = LocalDateTime.of(2024, 7, new Random().nextInt(10) + 20, 15, 0);
 
-        // Creëer wedstrijden voor Atletiek
-        wedstrijdService.save(new Wedstrijd(atletiek, stadion, LocalDateTime.of(2024, 7, 27, 9, 0), 50, 20.0, atletiek.getDisciplines(), 22368, 22697));
-
-        // Creëer wedstrijden voor Zwemmen
-        wedstrijdService.save(new Wedstrijd(zwemmen, stadion, LocalDateTime.of(2024, 7, 30, 10, 0), 30, 25.0, zwemmen.getDisciplines(), 42368, 42697));
-        
-        // Meer wedstrijden kunnen op soortgelijke wijze worden toegevoegd
+            wedstrijdService.save(new Wedstrijd(sport, stadion, datumTijd1, 50, 20.0, sport.getDisciplines(), new Random().nextInt(10000), new Random().nextInt(10000)));
+            wedstrijdService.save(new Wedstrijd(sport, stadion, datumTijd2, 30, 25.0, sport.getDisciplines(), new Random().nextInt(10000), new Random().nextInt(10000)));
+        }
     }
-
-
 }

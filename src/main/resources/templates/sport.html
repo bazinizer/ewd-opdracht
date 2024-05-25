@@ -14,7 +14,6 @@
         </li>
     </ul>
 
-    <!-- Controleer of de gebruiker tickets heeft en geen admin is -->
     <div th:if="${!#authorization.expression('hasRole(''ADMIN'')') and hasTickets}">
         <button onclick="toggleTickets()">Mijn Tickets</button>
         <div id="ticketList" style="display:none;">
