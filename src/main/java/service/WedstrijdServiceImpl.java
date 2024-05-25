@@ -17,6 +17,7 @@ import repository.WedstrijdRepository;
 
 @Service
 public class WedstrijdServiceImpl implements WedstrijdService {
+	
 
     @Autowired
     private WedstrijdRepository wedstrijdRepository;

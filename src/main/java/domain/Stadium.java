@@ -28,7 +28,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @AllArgsConstructor
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor
 @Table(name = "stadium")
 public class Stadium implements Serializable {
     private static final long serialVersionUID = 1L;

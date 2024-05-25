@@ -31,7 +31,6 @@ public class SecurityConfig {
         auth.userDetailsService(myUserService).passwordEncoder(new BCryptPasswordEncoder());
     }
 
-
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(csrf -> csrf.csrfTokenRepository(new HttpSessionCsrfTokenRepository()))
@@ -41,9 +40,9 @@ public class SecurityConfig {
                         .requestMatchers("/css/**").permitAll()
                         .requestMatchers("/i18n/**").permitAll()
                         .requestMatchers("/403**").permitAll()
-                        .requestMatchers("/sport/**").hasAnyRole("USER", "ADMIN")
-                        .requestMatchers(HttpMethod.POST, "/wedstrijden/{sportId}/create").hasRole("ADMIN")
+                        .requestMatchers("/wedstrijden/{sportId}/create**").hasRole("ADMIN")
                         .requestMatchers("/wedstrijden/{sportId}/koopTicket").hasRole("USER")
+                        .requestMatchers("/sport/**").hasAnyRole("USER", "ADMIN")
                         .requestMatchers("/wedstrijden/**").hasAnyRole("USER", "ADMIN"))
                 .formLogin(form -> form
                         .defaultSuccessUrl("/sport", true)

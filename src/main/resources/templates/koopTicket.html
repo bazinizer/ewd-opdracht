@@ -41,7 +41,7 @@
         <form th:action="@{'/wedstrijden/' + ${wedstrijd.id} + '/koopTicket'}" th:object="${ticket}" method="post" class="ticket-form">
             <div class="form-group">
                 <label for="quantity" th:text="#{label.quantity}">Aantal tickets:</label>
-                <input type="number" id="quantity" name="aantal" min="1" max="20" value="1" required oninput="updateTotalPrice()" th:field="*{aantal}" />
+                <input type="number" id="quantity" name="aantal"  required oninput="updateTotalPrice()" th:field="*{aantal}" />
                 <span class="error" th:if="${#fields.hasErrors('aantal')}" th:errors="*{aantal}"></span>
             </div>
             <button type="submit" th:text="#{button.buyTickets}">Koop Tickets</button>

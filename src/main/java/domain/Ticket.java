@@ -14,6 +14,8 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -44,6 +46,8 @@ public class Ticket implements Serializable {
     private Wedstrijd wedstrijd;
 
     @Column(nullable = false)
+    @Min(value=1,message="{aantal.negative}")
+    @Max(value=20)
     private int aantal;
 
     @Column(nullable = false)

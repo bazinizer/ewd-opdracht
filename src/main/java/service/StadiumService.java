@@ -8,4 +8,5 @@ public interface StadiumService {
     void save(Stadium stadium);
     void saveAll(List<Stadium> stadiums);
     List<Stadium> findAll();
+	Stadium findById(long stadiumId);
 }

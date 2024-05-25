@@ -27,4 +27,9 @@ public class StadiumServiceImpl implements StadiumService {
     public List<Stadium> findAll() {
         return (List<Stadium>) stadiumRepository.findAll();
     }
+
+	@Override
+	public Stadium findById(long stadiumId) {
+		return stadiumRepository.findById(stadiumId).orElse(null);
+	}
 }

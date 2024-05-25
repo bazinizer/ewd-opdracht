@@ -43,6 +43,7 @@ public class initDataConfig implements CommandLineRunner {
     private StadiumService stadiumService;
     @Autowired
     private TicketService ticketService;
+    
 
     @Override
     public void run(String... args) {
