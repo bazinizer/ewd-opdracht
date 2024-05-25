@@ -86,7 +86,7 @@ public class initDataConfig implements CommandLineRunner {
             LocalDateTime datumTijd2 = LocalDateTime.of(2024, 7, new Random().nextInt(10) + 20, 15, 0);
 
             wedstrijdService.save(new Wedstrijd(sport, stadion, datumTijd1, 50, 20.0, sport.getDisciplines(), new Random().nextInt(10000), new Random().nextInt(10000)));
-            wedstrijdService.save(new Wedstrijd(sport, stadion, datumTijd2, 30, 25.0, sport.getDisciplines(), new Random().nextInt(10000), new Random().nextInt(10000)));
+            wedstrijdService.save(new Wedstrijd(sport, stadion, datumTijd2, 15, 25.0, sport.getDisciplines(), new Random().nextInt(10000), new Random().nextInt(10000)));
         }
     }
 }

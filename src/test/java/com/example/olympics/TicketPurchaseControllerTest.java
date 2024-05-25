@@ -7,6 +7,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrlPattern;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
@@ -140,7 +141,7 @@ public class TicketPurchaseControllerTest {
                .param("aantal", aantal)
                .with(csrf()))
                .andExpect(status().is3xxRedirection())
-               .andExpect(redirectedUrl("/sport"));
+               .andExpect(redirectedUrlPattern("/wedstrijden/*"));
 
         verify(ticketService).purchaseTickets(userId, wedstrijdId, Integer.parseInt(aantal));
     }

@@ -31,7 +31,6 @@
                             <p class="text-gray-700" th:text="'Beschikbare plaatsen: ' + ${wedstrijd.vrijePlaatsen}"></p>
                             <p th:if="${isAdmin or wedstrijd.vrijePlaatsen > 0}" class="text-gray-700" th:text="'Prijs per ticket: ' + ${wedstrijd.prijsPerTicket} + ' EUR'"></p>
                             <div th:each="discipline : ${wedstrijd.disciplines}" class="text-gray-700" th:text="'Discipline: ' + ${discipline}"></div>
-                            <p class="text-gray-700" th:text="'Reeds gekochte tickets: ' + ${'${ticketsBought_' + wedstrijd.id + '}'}"></p>
                         </div>
                         <div>
                             <div th:if="${wedstrijd.vrijePlaatsen > 0}">
